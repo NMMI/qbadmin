@@ -1,4 +1,4 @@
-# Command line tools for the qbmoves
+# Command line tools for qbmoves and hands
 
 ### IMPORTANT: Versioning:
 Each of the repositories in the following table has a version number
