@@ -4,11 +4,11 @@
 Each of the repositories in the following table has a version number
 composed of 3 numbers in the form: **v x.y.z**
 
-|  Tools  [T]    |  Libraries [L] |  Firmware [F]            |
-|-----------------|---------------|--------------------------|
-| qbmove simulink | qbAPI         | qbmove firmware          |
-| qbmoveadmin     |               | qbmove advanced firmware |
-| handmoveadmin   |               | hand firmware micro      |
+|  Tools  [T]     |  Libraries [L] |  Firmware [F]            |
+|-----------------|----------------|--------------------------|
+| qbmove simulink | qbAPI          | qbmove firmware          |
+| qbadmin         |                | qbmove advanced firmware |
+|                 |                | hand firmware micro      |
 
 E.g. **xT** is the **x** number of the Tools whereas **yF** is the **y** number of the Firmware version.
 
@@ -26,11 +26,11 @@ Summarising
 
 E.g.
 
-| Tools              | Libraries    | Firmware               | Compatible |
-|--------------------|--------------|------------------------|------------|
-| qbmoveadmin v4.2.3 | qbAPI v4.5.0 | qbmove firmware v4.6.7 | YES        |
-| qbmoveadmin v3.2.3 | qbAPI v4.5.0 | qbmove firmware v4.6.7 | NO         |
-| qbmoveadmin v4.2.3 | qbAPI v4.5.7 | qbmove firmware v4.5.0 | YES        |
+| Tools          | Libraries    | Firmware               | Compatible |
+|----------------|--------------|------------------------|------------|
+| qbadmin v4.2.3 | qbAPI v4.5.0 | qbmove firmware v4.6.7 | YES        |
+| qbadmin v3.2.3 | qbAPI v4.5.0 | qbmove firmware v4.6.7 | NO         |
+| qbadmin v4.2.3 | qbAPI v4.5.7 | qbmove firmware v4.5.0 | YES        |
 
 
 ## Install the compiler
@@ -71,15 +71,15 @@ repository and be sure to have a file tree organised like this (remove the `-mas
 
 * your_workingcopy
     * qbAPI
-    * qbmoveadmin
+    * qbadmin
 
 Then you will need to compile the libraries.
 To do that, go to `qbAPI/src` and type `make`.
-Then, to compile the tools, go to `qbmoveadmin/src` folder and type `make`.
+Then, to compile the tools, go to `qbadmin/src` folder and type `make`.
 
 If everything is ok, depending on your OS, you should see a folder tree like this:
 
-* qbmoveadmin
+* qbadmin
    * bin_win
    * conf_files
    * objs_win
@@ -87,7 +87,7 @@ If everything is ok, depending on your OS, you should see a folder tree like thi
 
 or this:
 
-* qbmoveadmin
+* qbadmin
    * bin_unix
    * conf_files
    * objs_unix
@@ -104,8 +104,4 @@ UNIX
 `./name_of_the_bin`
 
 > By executing the tools you will receive the usage instruction
-
-### Precompiled version
-
-For windows there is a precompiled version downloadable [here](https://www.dropbox.com/s/7b2bv93fxpobdkd/qbtools.zip?dl=0)
 
