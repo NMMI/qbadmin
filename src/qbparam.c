@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <getopt.h>
 #include <stdint.h>
 
 // function declaration
@@ -19,12 +20,19 @@ int calibrate();
 // global variables
 char get_or_set;
 comm_settings comm_settings_t;
+uint8_t device_id = BROADCAST_ID;
+static const char *optString = "";
+static const struct option longOpts[] = {
+    { "id", required_argument, NULL, 0 },
+    { NULL, no_argument, NULL, 0}
+};
+
 /** Baudrate functions
  */
 int baudrate_reader();
 
 // --- MAIN ---
-int main() {
+int main(int argc, char **argv) {
     int i,j,k;
     char c_choice;
 
@@ -34,11 +42,13 @@ int main() {
     int num_of_params;
     int menu_number[50];
     int index;
+    int opt;
+    int longIndex = 0;
     int data_type[50];
     int data_dim[50];
     int data_size[50];
     char data_string[20];
-    char tmp_string[100];
+    char tmp_string[150];
 
     int8_t aux_int8[4];
     uint8_t aux_uint8[4];
@@ -49,6 +59,15 @@ int main() {
     float aux_float[4]; 
     double aux_double[4];
     uint8_t temp_char[4];
+
+    opt = getopt_long(argc, argv, optString, longOpts, &longIndex);
+    if(!opt)
+        sscanf(optarg, "%hhu", &device_id);
+
+    if(device_id)
+        printf("\nUsing qbparam with ID: %hhu\n\n", device_id);
+    else
+        printf("\nUsing qbparam in broadcast.\n\n");
 
     printVersion();
 
@@ -90,7 +109,7 @@ int main() {
         index = 0;
         value_size = 0;
         num_of_values = 0;
-        commGetParamList(&comm_settings_t, BROADCAST_ID, index, NULL, value_size, num_of_values, aux_string);
+        commGetParamList(&comm_settings_t, device_id, index, NULL, value_size, num_of_values, aux_string);
         
         // The packet returned in aux_string is composed as follows
         // [':'][':'][ID][LEN][CMD][PARAM_NUM][...]
@@ -289,36 +308,36 @@ int main() {
             }
             switch(data_type[index - 1]) {
                     case TYPE_FLAG:
-                        commGetParamList(&comm_settings_t, BROADCAST_ID, index, aux_uint8, data_size[index - 1], data_dim[index - 1], NULL);
+                        commGetParamList(&comm_settings_t, device_id, index, aux_uint8, data_size[index - 1], data_dim[index - 1], NULL);
                     break;
                     case TYPE_INT8:
-                        commGetParamList(&comm_settings_t, BROADCAST_ID, index, aux_int8, data_size[index - 1], data_dim[index - 1], NULL);
+                        commGetParamList(&comm_settings_t, device_id, index, aux_int8, data_size[index - 1], data_dim[index - 1], NULL);
                     break;
                     case TYPE_UINT8:
-                        commGetParamList(&comm_settings_t, BROADCAST_ID, index, aux_uint8, data_size[index - 1], data_dim[index - 1], NULL);
+                        commGetParamList(&comm_settings_t, device_id, index, aux_uint8, data_size[index - 1], data_dim[index - 1], NULL);
                     break;
                     case TYPE_INT16:
-                        commGetParamList(&comm_settings_t, BROADCAST_ID, index, aux_int16, data_size[index - 1], data_dim[index - 1], NULL);
+                        commGetParamList(&comm_settings_t, device_id, index, aux_int16, data_size[index - 1], data_dim[index - 1], NULL);
                     break;
                     case TYPE_UINT16:
-                        commGetParamList(&comm_settings_t, BROADCAST_ID, index, aux_uint16, data_size[index - 1], data_dim[index - 1], NULL);
+                        commGetParamList(&comm_settings_t, device_id, index, aux_uint16, data_size[index - 1], data_dim[index - 1], NULL);
                     break;
                     case TYPE_INT32:
-                        commGetParamList(&comm_settings_t, BROADCAST_ID, index, aux_int32, data_size[index - 1], data_dim[index - 1], NULL);
+                        commGetParamList(&comm_settings_t, device_id, index, aux_int32, data_size[index - 1], data_dim[index - 1], NULL);
                     break;
                     case TYPE_UINT32:
-                        commGetParamList(&comm_settings_t, BROADCAST_ID, index, aux_uint32, data_size[index - 1], data_dim[index - 1], NULL);
+                        commGetParamList(&comm_settings_t, device_id, index, aux_uint32, data_size[index - 1], data_dim[index - 1], NULL);
                     break;
                     case TYPE_FLOAT:
-                        commGetParamList(&comm_settings_t, BROADCAST_ID, index, aux_float, data_size[index - 1], data_dim[index - 1], NULL);
+                        commGetParamList(&comm_settings_t, device_id, index, aux_float, data_size[index - 1], data_dim[index - 1], NULL);
                     break;
                     case TYPE_DOUBLE:
-                        commGetParamList(&comm_settings_t, BROADCAST_ID, index, aux_double, data_size[index - 1], data_dim[index - 1], NULL);
+                        commGetParamList(&comm_settings_t, device_id, index, aux_double, data_size[index - 1], data_dim[index - 1], NULL);
                     break;
                 }
 
             usleep(100000);
-            commStoreParams(&comm_settings_t, BROADCAST_ID);
+            commStoreParams(&comm_settings_t, device_id);
             usleep(100000);
         }
 
@@ -373,7 +392,7 @@ int port_selection() {
 int calibrate() {
     printf("Calibrating...");
     fflush(stdout);
-    if(!commCalibrate(&comm_settings_t, BROADCAST_ID)) {
+    if(!commCalibrate(&comm_settings_t, device_id)) {
         printf("DONE\n");
         return 1;
     } else {
@@ -456,7 +475,7 @@ int initMemory() {
 
     printf("Initializing memory...");
 
-    if (!commInitMem(&comm_settings_t, BROADCAST_ID)) {
+    if (!commInitMem(&comm_settings_t, device_id)) {
         printf("DONE\n");
         return 1;
     }
