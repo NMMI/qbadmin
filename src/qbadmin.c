@@ -520,7 +520,7 @@ int main (int argc, char **argv)
         scanf("%c", &aux_char);
         if(aux_char == 'y' || aux_char == 'Y') {
             printf("Entering bootloader mode\n");
-            if(commBootloader(&comm_settings_1, global_args.device_id) > 0)
+            if(commBootloader(&comm_settings_1, global_args.device_id) >= 0)
                 printf("DONE\n");
             else
                 printf("An error occurred.\nRetry.\n");
