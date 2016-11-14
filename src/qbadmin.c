@@ -451,7 +451,7 @@ int main (int argc, char **argv)
 
 
         while(1) {
-            sensor_num = commGetVelocities(&comm_settings_1, global_args.device_id, global_args.measurements);
+            sensor_num = commGetVelocities(&comm_settings_1, global_args.device_id, global_args.velocities);
 
             if(sensor_num < 0 || sensor_num > 4) {
                 printf("An error occurred or the device is not supported\n");
