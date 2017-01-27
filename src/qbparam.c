@@ -21,11 +21,11 @@ int calibrate();
 char get_or_set;
 comm_settings comm_settings_t;
 uint8_t device_id = BROADCAST_ID;
-static const char *optString = "";
 static const struct option longOpts[] = {
-    { "id", required_argument, NULL, 0 },
+    { "id", required_argument, NULL, 'i' },
     { NULL, no_argument, NULL, 0}
 };
+static const char *optString = "i:";
 
 /** Baudrate functions
  */
@@ -61,8 +61,11 @@ int main(int argc, char **argv) {
     uint8_t temp_char[4];
 
     opt = getopt_long(argc, argv, optString, longOpts, &longIndex);
-    if(!opt)
-        sscanf(optarg, "%hhu", &device_id);
+    switch(opt){
+    	case 'i':
+	    	sscanf(optarg, "%hhu", &device_id);
+		break;
+	}
 
     if(device_id)
         printf("\nUsing qbparam with ID: %hhu\n\n", device_id);
