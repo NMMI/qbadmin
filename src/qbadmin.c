@@ -1194,7 +1194,7 @@ int open_port() {
             openRS485(&comm_settings_1, port , B2000000);
     #else
         if (global_args.BaudRate == BAUD_RATE_T_460800)
-           openRS485(&comm_settings_1, port , 460800);
+            openRS485(&comm_settings_1, port , 460800);
         else
             openRS485(&comm_settings_1, port , 2000000);
     #endif

@@ -409,6 +409,7 @@ int open_port() {
     FILE *file;
     char port[255];
     int br = baudrate_reader();
+    int baudrate;
 
     file = fopen(QBMOVE_FILE, "r");
 
@@ -421,8 +422,12 @@ int open_port() {
 
     fclose(file);
 
-
-    openRS485(&comm_settings_t, port);
+    if (br == BAUD_RATE_T_460800)
+        baudrate = 460800;
+    else
+        baudrate = 2000000;
+    
+    openRS485(&comm_settings_t, port, baudrate);
 
     if(comm_settings_t.file_handle == INVALID_HANDLE_VALUE)
     {
