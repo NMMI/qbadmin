@@ -30,7 +30,7 @@
 
 #include <math.h>
 
-#define QBADMIN_VERSION "v6.1.0"
+#define QBADMIN_VERSION "v6.2.0"
 
 #define NUM_OF_MOTORS 2
 #define NUM_OF_EMGS 2
