@@ -1395,7 +1395,7 @@ void int_handler_2(int sig) {
 
     sensor_num = commGetMeasurements(&comm_settings_1, global_args.device_id, temp_meas);
 
-    if(sensor_num > 0 && sensor_num < 4) {
+    if(sensor_num > 0 && sensor_num <= 4) {
         printf("\n\nSetting zero position\n");
 
         //Set the offsets equal to minus current positions
