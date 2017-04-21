@@ -149,6 +149,7 @@ uint8_t resolution[4];         // sensors resolution set on the board
 
 int ret;                                    //utility variable to store return values
 int aux_int;
+int error_count = 0;
 
 comm_settings comm_settings_1;
 
@@ -456,8 +457,11 @@ int main (int argc, char **argv)
             sensor_num = commGetMeasurements(&comm_settings_1, global_args.device_id, global_args.measurements);
 
             if(sensor_num < 0 || sensor_num > 4) {
-                printf("An error occurred or the device is not supported\n");
-                break;
+                error_count++;
+                if (error_count >=10) {
+                    printf("An error occurred or the device is not supported\n");
+                    break;
+                }
             }
             else {
                 printf("measurements:     ");
@@ -484,8 +488,11 @@ int main (int argc, char **argv)
             sensor_num = commGetVelocities(&comm_settings_1, global_args.device_id, global_args.velocities);
 
             if(sensor_num < 0 || sensor_num > 4) {
-                printf("An error occurred or the device is not supported\n");
-                break;
+                error_count++;
+                if (error_count >=10) {
+                    printf("An error occurred or the device is not supported\n");
+                    break;
+                }
             }
             else {
                 printf("velocities:     ");
@@ -510,8 +517,11 @@ int main (int argc, char **argv)
             sensor_num = commGetAccelerations(&comm_settings_1, global_args.device_id, global_args.accelerations);
 
             if(sensor_num < 0 || sensor_num > 4) {
-                printf("An error occurred or the device is not supported\n");
-                break;
+                error_count++;
+                if (error_count >=10) {
+                    printf("An error occurred or the device is not supported\n");
+                    break;
+                }
             }
             else {
                 printf("accelerations:     ");
@@ -532,8 +542,11 @@ int main (int argc, char **argv)
             ret = commGetJoystick(&comm_settings_1, global_args.device_id, global_args.joystick);
             
             if(ret < 0) {
-                printf("An error occurred or the device has no joystick\n");
-                break;
+                error_count++;
+                if (error_count >=10) {
+                    printf("An error occurred or the device has no joystick\n");
+                    break;
+                }
             }
             else {
                 printf("Joystick Meas - X:%hd  Y:%hd\n", global_args.joystick[0], global_args.joystick[1]);
@@ -626,8 +639,11 @@ int main (int argc, char **argv)
 
             // Getting EMG values
             if(commGetEmg(&comm_settings_1, global_args.device_id, global_args.emg) < 0) {
-                puts("An error occurred or the device has no EMG functionality");
-                break;
+                error_count++;
+                if (error_count >=10) {
+                    puts("An error occurred or the device has no EMG functionality");
+                    break;
+                }
             }
             if(global_args.flag_verbose) {
                 printf("Signal 1: %d\t Signal 2: %d\n", global_args.emg[0], global_args.emg[1]);
@@ -820,7 +836,8 @@ int main (int argc, char **argv)
                     break;
                 }
             }
-            printf("Time: %ld\n", timevaldiff(&begin, &t_act));
+            commGetCurrents(&comm_settings_1, global_args.device_id, global_args.currents);
+            printf("Time: %ld, C1: %d, C2: %d\n", timevaldiff(&begin, &t_act), global_args.currents[0], global_args.currents[1]);
             // update measurements
             sensor_num = commGetMeasurements(&comm_settings_1, global_args.device_id,
                     global_args.measurements);
@@ -1395,7 +1412,7 @@ void int_handler_2(int sig) {
 
     sensor_num = commGetMeasurements(&comm_settings_1, global_args.device_id, temp_meas);
 
-    if(sensor_num > 0 && sensor_num <= 4) {
+    if(sensor_num > 0 && sensor_num < 4) {
         printf("\n\nSetting zero position\n");
 
         //Set the offsets equal to minus current positions
