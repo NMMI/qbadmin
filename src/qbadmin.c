@@ -758,6 +758,8 @@ int main (int argc, char **argv)
         float phase_shift;                  // angular shift between sinusoids
         float total_time;                   // total execution time (if 0 takes
                                             //   number of values as parameter)
+        float working_cycle;
+        float pause_cycle;
         int num_values;                     // number of values (ignored if
                                             //   total time != 0)
 
@@ -771,25 +773,21 @@ int main (int argc, char **argv)
         int error_counter = 0;
         int do_once = 1;
         int sensor_num = 0;
-
-        if(global_args.flag_log) {
-            strcpy(global_args.log_file, "sin_log.csv");
-            global_args.log_file_fd = fopen(global_args.log_file, "w");
-        }
-
-        // CTRL-C handler
-        signal(SIGINT, int_handler);
-
-        if(global_args.flag_verbose) {
-           puts("Generate sinusoidal inputs\n");
-        }
-
+        char filename[35];
+        const int CYCLE = 1;
+        const int PAUSE = 0;
+        
+        int operation = CYCLE;
+        time_t t;
+        struct tm tm;
+        
         // opening file
         FILE* filep;
         filep = fopen(SIN_FILE, "r");
         if (filep == NULL) {
-            printf("Failed opening file\n");
+            printf("Failed opening file 1\n");
         }
+        // opening file
 
         fscanf(filep, "delta_t %f\n", &delta_t);
         fscanf(filep, "amplitude_1 %f\n", &amplitude_1);
@@ -800,94 +798,134 @@ int main (int argc, char **argv)
         fscanf(filep, "freq_2 %f\n", &freq_2);
         fscanf(filep, "phase_shift %f\n", &phase_shift);
         fscanf(filep, "total_time %f\n", &total_time);
+        fscanf(filep, "working_cycle %f\n", &working_cycle);
+        fscanf(filep, "pause_cycle %f\n", &pause_cycle);
         fscanf(filep, "num_values %d\n", &num_values);
-
-        // closing file
+        
         fclose(filep);
 
-        // if total_time set, calculate num_values
-        if (total_time != 0) {
-            num_values = (total_time*1000)/delta_t;
-            printf("Num_values: %d\n", num_values);
+        struct timeval start_test, end_test;
+        
+        gettimeofday(&start_test, &foo);
+        gettimeofday(&end_test, &foo);
+        while(timevaldiff(&start_test, &end_test) < ((total_time - 1) * 1000000)) {
+            switch (operation) {
+            case CYCLE:
+                    
+                t = time(NULL);
+                tm = *localtime(&t);
+
+                if(global_args.flag_log) {
+                    sprintf(filename, "sin_log_%d-%d-%d_%d-%d-%d.csv\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
+                    strcpy(global_args.log_file, filename);
+                    global_args.log_file_fd = fopen(global_args.log_file, "w");
+                }
+
+                // CTRL-C handler
+                signal(SIGINT, int_handler);
+
+                if(global_args.flag_verbose) {
+                    puts("Generate sinusoidal inputs\n");
+                }
+
+                // if working_cycle is set, calculate num_values
+                if (total_time != 0) {
+                    num_values = (working_cycle*1000)/delta_t;
+                    printf("Num_values: %d\n", num_values);
+                }
+
+                // calculate periods
+                period_1 = 1/freq_1;
+                period_2 = 1/freq_2;
+
+                // deg to rad
+                phase_shift = phase_shift * PI / 180.0;
+
+                // calculate increment for every step
+                inc_1 = (2 * PI) / (period_1 / (delta_t / 1000.0));
+                inc_2 = (2 * PI) / (period_2 / (delta_t / 1000.0));
+
+                // activate motors
+                commActivate(&comm_settings_1, global_args.device_id, 1);
+
+                // retrieve begin time
+                gettimeofday(&begin, &foo);
+
+                for(i=0; i<num_values; i++) {
+                    // wait for next value
+                    while (1) {
+                        gettimeofday(&t_act, &foo);
+                        if (timevaldiff(&begin, &t_act) >= i * delta_t * 1000) {
+                            break;
+                        }
+                    }
+                    commGetCurrents(&comm_settings_1, global_args.device_id, global_args.currents);
+                    printf("Time: %ld, C1: %d, C2: %d\n", timevaldiff(&begin, &t_act), global_args.currents[0], global_args.currents[1]);
+                    // update measurements
+                    sensor_num = commGetMeasurements(&comm_settings_1, global_args.device_id, global_args.measurements);
+                    if (sensor_num < 0) {
+                        error_counter++;
+                    }
+
+                    // update inputs
+                    global_args.inputs[0] = (sin(angle_1)*amplitude_1 + bias_1);
+                    global_args.inputs[1] = (sin(angle_2 + phase_shift)*amplitude_2 + bias_2);
+
+                    // set new inputs
+                    commSetInputs(&comm_settings_1, global_args.device_id, global_args.inputs);
+
+                    // update angle position
+                    angle_1 += inc_1;
+                    angle_2 += inc_2;
+
+                    //Get currents to save in log file
+                    commGetCurrents(&comm_settings_1, global_args.device_id, global_args.currents);
+                    //log file
+                    if (global_args.flag_log) {
+                        if (do_once){
+                            fprintf(global_args.log_file_fd, "t(ms)\tI[0]\tI[1]\tM[0]\tM[1]\tM[2]\tC[0]\tC[1]\n");
+                            do_once = 0;
+                        }
+                        fprintf(global_args.log_file_fd, "%ld\t", timevaldiff(&begin, &t_act)/1000);
+                        fprintf(global_args.log_file_fd, "%d\t%d\t", global_args.inputs[0], global_args.inputs[1]);
+                        for (k = 0; k < sensor_num; k++) {
+                            fprintf(global_args.log_file_fd, "%d\t", global_args.measurements[k]);
+                        }
+                        fprintf(global_args.log_file_fd, "%d\t%d\n",
+                        global_args.currents[0], global_args.currents[1]);
+                    }
+                    if(i == (num_values - 1)) {
+
+                        // get time at the end of for cycle
+                        gettimeofday(&end, &foo);
+
+                        // reset motor  position
+                        global_args.inputs[0] = 0;
+                        global_args.inputs[1] = 0;
+                        commSetInputs(&comm_settings_1, global_args.device_id,
+                                global_args.inputs);
+
+                        printf("total time (millisec): %f\n", timevaldiff(&begin, &end)/1000.0);
+                        printf("Error counter: %d\n", error_counter);
+                        operation = PAUSE;
+                    }
+                }
+                break;
+                    
+            case PAUSE:
+                    printf("\n+++ PAUSE +++\n");
+                    gettimeofday(&begin, &foo);
+                    while(1) {
+                        gettimeofday(&t_act, &foo);
+                        if (timevaldiff(&begin, &t_act) >= (pause_cycle * 1000000))
+                            break;
+                    }
+                    operation = CYCLE;
+                    do_once = 1;
+                break;
+            }
+            gettimeofday(&end_test, &foo); 
         }
-
-        // calculate periods
-        period_1 = 1/freq_1;
-        period_2 = 1/freq_2;
-
-        // deg to rad
-        phase_shift = phase_shift * PI / 180.0;
-
-        // calculate increment for every step
-        inc_1 = (2 * PI) / (period_1 / (delta_t / 1000.0));
-        inc_2 = (2 * PI) / (period_2 / (delta_t / 1000.0));
-
-        // activate motors
-        commActivate(&comm_settings_1, global_args.device_id, 1);
-
-        // retrieve begin time
-        gettimeofday(&begin, &foo);
-
-        for(i=0; i<num_values; i++) {
-            // wait for next value
-            while (1) {
-                gettimeofday(&t_act, &foo);
-                if (timevaldiff(&begin, &t_act) >= i * delta_t * 1000) {
-                    break;
-                }
-            }
-            commGetCurrents(&comm_settings_1, global_args.device_id, global_args.currents);
-            printf("Time: %ld, C1: %d, C2: %d\n", timevaldiff(&begin, &t_act), global_args.currents[0], global_args.currents[1]);
-            // update measurements
-            sensor_num = commGetMeasurements(&comm_settings_1, global_args.device_id,
-                    global_args.measurements);
-            if (sensor_num < 0) {
-                error_counter++;
-            }
-
-            // update inputs
-            global_args.inputs[0] = (sin(angle_1)*amplitude_1 + bias_1);
-            global_args.inputs[1] = (sin(angle_2 + phase_shift)*amplitude_2 + bias_2);
-
-            // set new inputs
-            commSetInputs(&comm_settings_1, global_args.device_id, global_args.inputs);
-
-            // update angle position
-            angle_1 += inc_1;
-            angle_2 += inc_2;
-
-            //Get currents to save in log file
-            commGetCurrents(&comm_settings_1, global_args.device_id, global_args.currents);
-            //log file
-            if (global_args.flag_log) {
-                if (do_once){
-                    fprintf(global_args.log_file_fd, "t(ms)\t I[0],\tI[1],\tM[0],\tM[1],\tM[2],\tC[0],\tC[1]\n");
-                    do_once = 0;
-                }
-		fprintf(global_args.log_file_fd, "%ld\t", timevaldiff(&begin, &t_act)/1000);
-                fprintf(global_args.log_file_fd, "%d,\t%d\t",
-                    global_args.inputs[0], global_args.inputs[1]);
-                for (k = 0; k < sensor_num; k++) {
-                    fprintf(global_args.log_file_fd, "%d,\t", global_args.measurements[k]);
-                }
-                fprintf(global_args.log_file_fd, "%d,\t%d\n",
-                    global_args.currents[0], global_args.currents[1]);
-            }
-
-        }
-
-        // get time at the end of for cycle
-        gettimeofday(&end, &foo);
-
-        // reset motor  position
-        global_args.inputs[0] = 0;
-        global_args.inputs[1] = 0;
-        commSetInputs(&comm_settings_1, global_args.device_id,
-                global_args.inputs);
-
-        printf("total time (millisec): %f\n", timevaldiff(&begin, &end)/1000.0);
-        printf("Error counter: %d\n", error_counter);
-
     }
 
 
