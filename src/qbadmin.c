@@ -814,9 +814,9 @@ int main (int argc, char **argv)
                     
                 t = time(NULL);
                 tm = *localtime(&t);
-
+                
                 if(global_args.flag_log) {
-                    sprintf(filename, "sin_log_%d-%d-%d_%d-%d-%d.csv\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
+                    sprintf(filename, "sin_log_%d-%d-%d_%d-%d-%d.csv", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
                     strcpy(global_args.log_file, filename);
                     global_args.log_file_fd = fopen(global_args.log_file, "w");
                 }
