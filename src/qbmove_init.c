@@ -156,7 +156,7 @@ int open_port(char* port_s) {
     printf("Opening serial port...");
     fflush(stdout);
 
-    openRS485(&comm_settings_t, port_s);
+    openRS485(&comm_settings_t, port_s, 2000000);
     
     if(comm_settings_t.file_handle == INVALID_HANDLE_VALUE)
     {
@@ -353,6 +353,7 @@ int test() {
     char c;
 
     fflush(stdin);
+    commActivate(&comm_settings_t, device_id, 0x03);
     printf("Do you want to perform a test cycle? [Y,n]\n");
     c = getchar();
     if (c == 'n' || c == 'N') {
@@ -360,9 +361,9 @@ int test() {
     }
 
     #if !(defined(_WIN32) || defined(_WIN64))
-        system("./qbtest -r 1");
+        system("./qbmove_test -r 1");
     #else
-        system("qbtest -r 1");
+        system("qbmove_test -r 1");
     #endif
 
     return 1;
@@ -407,9 +408,9 @@ int calibrate() {
 int backup() {
 
     #if !(defined(_WIN32) || defined(_WIN64))
-        system("./qbbackup");
+        system("./qbmove_backup");
     #else
-        system("qbbackup");
+        system("qbmove_backup");
     #endif
 
     return 1;

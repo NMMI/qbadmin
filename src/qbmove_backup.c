@@ -57,7 +57,7 @@ int close_file();
 
 //==================================================================     globals
 
-int device_id;
+int device_id = BROADCAST_ID;
 char port[255];
 char* serial;
 comm_settings comm_settings_t;
@@ -119,7 +119,7 @@ int open_port() {
     printf("Opening port...");
     fflush(stdout);
 
-    openRS485(&comm_settings_t, port);
+    openRS485(&comm_settings_t, port, 2000000);
     
     if(comm_settings_t.file_handle == INVALID_HANDLE_VALUE)
     {
@@ -170,7 +170,7 @@ int retrieve_serial() {
 int retrieve_offsets() {
     int i,j;
     int index = 8;          //The index relative to the measurements offsets is 8
-    int data_size = 2;      //The measurements offsets are 2 bytes wide 
+    int data_size = 4;      //The measurements offsets are 2 bytes wide
 
     printf("Retrieving offsets...");
     fflush(stdout);
@@ -180,7 +180,7 @@ int retrieve_offsets() {
             offsets[i] += aux_string[(index - 1)* PARAM_BYTE_SLOT + 8 + i * data_size + data_size - j - 1] << (8 * j);
         }
     }
-
+/*
     for (i = 0; i < sensor_num; i++) {
         if (offsets[i] != 0)
             break;
@@ -189,7 +189,7 @@ int retrieve_offsets() {
             return 0;
         }
     }
-
+*/
     usleep(500000);
 
     printf("DONE\n");

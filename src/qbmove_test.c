@@ -50,7 +50,7 @@
 
 #define REPETITION_PER_CYCLE 2
 #define BATCH_CYCLES 5 //number of cycle after which have a pause
-#define DELAY 1500000	//in microseconds
+#define DELAY 1000000	//in microseconds
 #define LITTLE_DELAY 5000 //in microseconds
 #define PAUSE 30 //in seconds
 
@@ -149,7 +149,7 @@ int open_port() {
     fclose(file);
 
 
-    openRS485(&comm_settings_t, port);
+    openRS485(&comm_settings_t, port, 2000000);
     
     if(comm_settings_t.file_handle == INVALID_HANDLE_VALUE)
     {
@@ -173,7 +173,7 @@ int cycle() {
     signal(SIGINT, int_handler);
 
     // Activate motors
-    commActivate(&comm_settings_t, device_id, 1);
+    commActivate(&comm_settings_t, device_id, 0x03);
 
     // minimum stiffness
     for (i = 0; i < REPETITION_PER_CYCLE; i++) {
@@ -183,7 +183,7 @@ int cycle() {
         commSetPosStiff(&comm_settings_t, device_id, inputs);
         usleep(DELAY);
 
-        while((commGetMeasurements(&comm_settings_t, device_id, measurements_1) > 0));
+        while((commGetMeasurements(&comm_settings_t, device_id, measurements_1) < 0));
 
         inputs[0] = DEFAULT_SUP_LIMIT;
         inputs[1] = ZERO;
@@ -191,7 +191,7 @@ int cycle() {
         commSetPosStiff(&comm_settings_t, device_id, inputs);
         usleep(DELAY);
 
-        while(commGetMeasurements(&comm_settings_t, device_id, measurements_2));
+        while((commGetMeasurements(&comm_settings_t, device_id, measurements_2) < 0));
 
         printf("difference between output shaft and pulleys:\n1: %d\t2: %d\n", measurements_1[2] - measurements_1[0], measurements_2[2] - measurements_2[0]);
     }
@@ -210,7 +210,7 @@ int cycle() {
         commSetPosStiff(&comm_settings_t, device_id, inputs);
         usleep(DELAY);
 
-        while((commGetMeasurements(&comm_settings_t, device_id, measurements_1) > 0));
+        while((commGetMeasurements(&comm_settings_t, device_id, measurements_1) < 0));
 
         inputs[0] = DEFAULT_SUP_LIMIT;
         inputs[1] = (short int)(MAX_FORWARD_STIFFNESS * 0.8);
@@ -218,7 +218,7 @@ int cycle() {
         commSetPosStiff(&comm_settings_t, device_id, inputs);
         usleep(DELAY);
 
-        while((commGetMeasurements(&comm_settings_t, device_id, measurements_2) > 0));
+        while((commGetMeasurements(&comm_settings_t, device_id, measurements_2) < 0));
     }
 
     // set to zero
@@ -235,7 +235,7 @@ int cycle() {
         commSetPosStiff(&comm_settings_t, device_id, inputs);
         usleep(DELAY);
 
-        while((commGetMeasurements(&comm_settings_t, device_id, measurements_1) > 0));
+        while((commGetMeasurements(&comm_settings_t, device_id, measurements_1) < 0));
 
         inputs[0] = DEFAULT_SUP_LIMIT;
         inputs[1] = (short int)(MAX_REVERSE_STIFFNESS * 0.8);
@@ -243,7 +243,7 @@ int cycle() {
         commSetPosStiff(&comm_settings_t, device_id, inputs);
         usleep(DELAY);
 
-        while((commGetMeasurements(&comm_settings_t, device_id, measurements_2) > 0));
+        while((commGetMeasurements(&comm_settings_t, device_id, measurements_2) < 0));
     }
 
     // set to zero

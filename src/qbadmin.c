@@ -759,7 +759,7 @@ int main (int argc, char **argv)
         float total_time;                   // total execution time (if 0 takes
                                             //   number of values as parameter)
         float working_cycle;
-        float pause_cycle;
+        unsigned int pause_cycle;
         int num_values;                     // number of values (ignored if
                                             //   total time != 0)
 
@@ -799,7 +799,7 @@ int main (int argc, char **argv)
         fscanf(filep, "phase_shift %f\n", &phase_shift);
         fscanf(filep, "total_time %f\n", &total_time);
         fscanf(filep, "working_cycle %f\n", &working_cycle);
-        fscanf(filep, "pause_cycle %f\n", &pause_cycle);
+        fscanf(filep, "pause_cycle %u\n", &pause_cycle);
         fscanf(filep, "num_values %d\n", &num_values);
         
         fclose(filep);
@@ -814,7 +814,7 @@ int main (int argc, char **argv)
                     
                 t = time(NULL);
                 tm = *localtime(&t);
-                
+
                 if(global_args.flag_log) {
                     sprintf(filename, "sin_log_%d-%d-%d_%d-%d-%d.csv", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
                     strcpy(global_args.log_file, filename);
