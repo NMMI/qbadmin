@@ -1,6 +1,8 @@
+// ----------------------------------------------------------------------------
 // BSD 3-Clause License
 
-// Copyright (c) 2017, qbrobotics
+// Copyright (c) 2016, qbrobotics
+// Copyright (c) 2017, Centro "E.Piaggio"
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -27,16 +29,19 @@
 // CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// POSSIBILITY OF SUCH DAMAGE.
+// ----------------------------------------------------------------------------
 
 /**
 * \file         hand_demo.c
 *
-* \brief        qbHand demonstration file
+* \brief        Demonstration file
+* \author       _Centro "E.Piaggio"_
+* \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
+* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 *
-* \details      With this file is possible to see a brief demonstration of qbHand
+* \details      With this file is possible to see a brief demonstration of terminal device
 *               opening and closing.
-*
-* \copyright    (C)  qbrobotics. All rights reserved.
 */
 
 //=================================================================     includes

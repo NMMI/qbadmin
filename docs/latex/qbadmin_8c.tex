@@ -1,0 +1,198 @@
+\section{qbadmin.\+c File Reference}
+\label{qbadmin_8c}\index{qbadmin.\+c@{qbadmin.\+c}}
+
+
+Command line tools file.  
+
+
+{\ttfamily \#include \char`\"{}../../qb\+A\+P\+I/src/qbmove\+\_\+communications.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}definitions.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$getopt.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$sys/time.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+Include dependency graph for qbadmin.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{qbadmin_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \textbf{ global\+\_\+args}
+\item 
+struct \textbf{ position}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\label{qbadmin_8c_abe553924eef0ba8079dc745caf1f348c}} 
+int {\bfseries open\+\_\+port} ()
+\item 
+\mbox{\label{qbadmin_8c_a3939d4ef4a0e2be02b1eb9e1994ec985}} 
+int {\bfseries port\+\_\+selection} ()
+\item 
+\mbox{\label{qbadmin_8c_a22b6aac07ec93fb920cc09b13175fa20}} 
+int {\bfseries polling} ()
+\item 
+void \textbf{ display\+\_\+usage} (void)
+\item 
+float $\ast$$\ast$ \textbf{ file\+\_\+parser} (char $\ast$, int $\ast$, int $\ast$)
+\item 
+void \textbf{ int\+\_\+handler} (int sig)
+\item 
+void \textbf{ int\+\_\+handler\+\_\+2} (int sig)
+\item 
+void \textbf{ int\+\_\+handler\+\_\+3} (int sig)
+\item 
+int \textbf{ baudrate\+\_\+reader} ()
+\item 
+\mbox{\label{qbadmin_8c_abab28310fbbbcecb4658ce38e10ae89a}} 
+int {\bfseries baudrate\+\_\+writer} (const int)
+\item 
+int \textbf{ main} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static const struct option {\bfseries long\+Opts} [$\,$]
+\item 
+\mbox{\label{qbadmin_8c_a1b7271ddd60c22960c39ae6caf4d5254}} 
+static const char $\ast$ {\bfseries opt\+String} = \char`\"{}s\+:adgptvh?f\+:ljqxzkycbe\+:uoi\+W\+:\+P\+B\+:\char`\"{}
+\item 
+\mbox{\label{qbadmin_8c_ac8e0866643ba994eff3e2fa3203885e0}} 
+struct \textbf{ global\+\_\+args} {\bfseries global\+\_\+args}
+\item 
+\mbox{\label{qbadmin_8c_a821afb7ce4f1050e40bf615da3259a67}} 
+struct \textbf{ position} {\bfseries p1}
+\item 
+\mbox{\label{qbadmin_8c_aeb1c5de60c0abd963c4b508d9f4c3cb1}} 
+struct \textbf{ position} {\bfseries p2}
+\item 
+\mbox{\label{qbadmin_8c_a761d62937db066110a8f3e1479e8c404}} 
+uint8\+\_\+t {\bfseries resolution} [4]
+\item 
+\mbox{\label{qbadmin_8c_a6baa346e44f4c2158d2be4f9b77b8203}} 
+int {\bfseries ret}
+\item 
+\mbox{\label{qbadmin_8c_abf8643fca8c83efc67b50d0f2ecc8534}} 
+int {\bfseries aux\+\_\+int}
+\item 
+\mbox{\label{qbadmin_8c_ae80455d5ff9aa4415b211f9842cb885e}} 
+comm\+\_\+settings {\bfseries comm\+\_\+settings\+\_\+1}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Command line tools file. 
+
+\begin{DoxyAuthor}{Author}
+{\itshape Centro \char`\"{}\+E.\+Piaggio\char`\"{}} 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+(C) 2012-\/2016 qbrobotics. All rights reserved. 
+
+(C) 2017 Centro \char`\"{}\+E.\+Piaggio\char`\"{}. All rights reserved.
+\end{DoxyCopyright}
+With this file is possible to command a terminal device. 
+
+\subsection{Function Documentation}
+\mbox{\label{qbadmin_8c_a872d84bb02f7d8f4617246f0c6d37c43}} 
+\index{qbadmin.\+c@{qbadmin.\+c}!baudrate\+\_\+reader@{baudrate\+\_\+reader}}
+\index{baudrate\+\_\+reader@{baudrate\+\_\+reader}!qbadmin.\+c@{qbadmin.\+c}}
+\subsubsection{baudrate\+\_\+reader()}
+{\footnotesize\ttfamily int baudrate\+\_\+reader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Baudrate functions \mbox{\label{qbadmin_8c_acf5088e61b616f77674f62a9ba3b86b7}} 
+\index{qbadmin.\+c@{qbadmin.\+c}!display\+\_\+usage@{display\+\_\+usage}}
+\index{display\+\_\+usage@{display\+\_\+usage}!qbadmin.\+c@{qbadmin.\+c}}
+\subsubsection{display\+\_\+usage()}
+{\footnotesize\ttfamily void display\+\_\+usage (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Display program usage, and exit. \mbox{\label{qbadmin_8c_a98a5d602fbf649e7f9e8f851cb757f71}} 
+\index{qbadmin.\+c@{qbadmin.\+c}!file\+\_\+parser@{file\+\_\+parser}}
+\index{file\+\_\+parser@{file\+\_\+parser}!qbadmin.\+c@{qbadmin.\+c}}
+\subsubsection{file\+\_\+parser()}
+{\footnotesize\ttfamily float $\ast$$\ast$ file\+\_\+parser (\begin{DoxyParamCaption}\item[{char $\ast$}]{filename,  }\item[{int $\ast$}]{deltat,  }\item[{int $\ast$}]{num\+\_\+values }\end{DoxyParamCaption})}
+
+Parse csv input file with values to be sent to the motors
+
+Parse C\+SV file and return a pointer to a matrix of float dinamically allocated. Remember to use free(pointer) in the caller \mbox{\label{qbadmin_8c_aa2bbc30ab4adea656f93d184270b0463}} 
+\index{qbadmin.\+c@{qbadmin.\+c}!int\+\_\+handler@{int\+\_\+handler}}
+\index{int\+\_\+handler@{int\+\_\+handler}!qbadmin.\+c@{qbadmin.\+c}}
+\subsubsection{int\+\_\+handler()}
+{\footnotesize\ttfamily void int\+\_\+handler (\begin{DoxyParamCaption}\item[{int}]{sig }\end{DoxyParamCaption})}
+
+C\+T\+R\+L-\/c handler 1
+
+handle C\+T\+R\+L-\/C interruption 1 \mbox{\label{qbadmin_8c_aaa3f1dc84f95d8979c957bb2d9c6df18}} 
+\index{qbadmin.\+c@{qbadmin.\+c}!int\+\_\+handler\+\_\+2@{int\+\_\+handler\+\_\+2}}
+\index{int\+\_\+handler\+\_\+2@{int\+\_\+handler\+\_\+2}!qbadmin.\+c@{qbadmin.\+c}}
+\subsubsection{int\+\_\+handler\+\_\+2()}
+{\footnotesize\ttfamily void int\+\_\+handler\+\_\+2 (\begin{DoxyParamCaption}\item[{int}]{sig }\end{DoxyParamCaption})}
+
+C\+T\+R\+L-\/c handler 2
+
+handle C\+T\+R\+L-\/C interruption 2 \mbox{\label{qbadmin_8c_affb492a4714b7e7b8047971581fd9aab}} 
+\index{qbadmin.\+c@{qbadmin.\+c}!int\+\_\+handler\+\_\+3@{int\+\_\+handler\+\_\+3}}
+\index{int\+\_\+handler\+\_\+3@{int\+\_\+handler\+\_\+3}!qbadmin.\+c@{qbadmin.\+c}}
+\subsubsection{int\+\_\+handler\+\_\+3()}
+{\footnotesize\ttfamily void int\+\_\+handler\+\_\+3 (\begin{DoxyParamCaption}\item[{int}]{sig }\end{DoxyParamCaption})}
+
+C\+T\+R\+L-\/c handler 3
+
+Handles the ctrl+c interruption to save the emg sensors measurements into a file \mbox{\label{qbadmin_8c_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{qbadmin.\+c@{qbadmin.\+c}!main@{main}}
+\index{main@{main}!qbadmin.\+c@{qbadmin.\+c}}
+\subsubsection{main()}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+main loop 
+
+\subsection{Variable Documentation}
+\mbox{\label{qbadmin_8c_a091f2d9683d6ef802780b360f66bad67}} 
+\index{qbadmin.\+c@{qbadmin.\+c}!long\+Opts@{long\+Opts}}
+\index{long\+Opts@{long\+Opts}!qbadmin.\+c@{qbadmin.\+c}}
+\subsubsection{long\+Opts}
+{\footnotesize\ttfamily const struct option long\+Opts[$\,$]\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+    \{ \textcolor{stringliteral}{"set\_inputs"}, required\_argument, NULL, \textcolor{charliteral}{'s'} \},
+    \{ \textcolor{stringliteral}{"get\_measurements"}, no\_argument, NULL, \textcolor{charliteral}{'g'} \},
+    \{ \textcolor{stringliteral}{"activate"}, no\_argument, NULL, \textcolor{charliteral}{'a'} \},
+    \{ \textcolor{stringliteral}{"deactivate"}, no\_argument, NULL, \textcolor{charliteral}{'d'} \},
+    \{ \textcolor{stringliteral}{"ping"}, no\_argument, NULL, \textcolor{charliteral}{'p'} \},
+    \{ \textcolor{stringliteral}{"serial\_port"}, no\_argument, NULL, \textcolor{charliteral}{'t'} \},
+    \{ \textcolor{stringliteral}{"verbose"}, no\_argument, NULL, \textcolor{charliteral}{'v'} \},
+    \{ \textcolor{stringliteral}{"help"}, no\_argument, NULL, \textcolor{charliteral}{'h'} \},
+    \{ \textcolor{stringliteral}{"file"}, required\_argument, NULL, \textcolor{charliteral}{'f'}\},
+    \{ \textcolor{stringliteral}{"log"}, no\_argument, NULL, \textcolor{charliteral}{'l'}\},
+    \{ \textcolor{stringliteral}{"get\_emg"}, no\_argument, NULL, \textcolor{charliteral}{'q'}\},
+    \{ \textcolor{stringliteral}{"set\_zeros"}, no\_argument, NULL, \textcolor{charliteral}{'z'}\},
+    \{ \textcolor{stringliteral}{"use\_gen\_sin"}, no\_argument, NULL, \textcolor{charliteral}{'y'}\},
+    \{ \textcolor{stringliteral}{"get\_currents"}, no\_argument, NULL, \textcolor{charliteral}{'c'}\},
+    \{ \textcolor{stringliteral}{"calibration"}, no\_argument, NULL, \textcolor{charliteral}{'k'}\},
+    \{ \textcolor{stringliteral}{"bootloader"}, no\_argument, NULL, \textcolor{charliteral}{'b'}\},
+    \{ \textcolor{stringliteral}{"joystick"}, no\_argument, NULL, \textcolor{charliteral}{'j'}\},
+    \{ \textcolor{stringliteral}{"external drive"}, no\_argument, NULL, \textcolor{charliteral}{'x'}\},
+    \{ \textcolor{stringliteral}{"set\_pos\_stiff"}, required\_argument, NULL, \textcolor{charliteral}{'e'}\},
+    \{ \textcolor{stringliteral}{"get\_velocities"}, no\_argument, NULL, \textcolor{charliteral}{'i'}\},
+    \{ \textcolor{stringliteral}{"get\_accelerations"}, no\_argument, NULL, \textcolor{charliteral}{'o'}\},
+    \{ \textcolor{stringliteral}{"set\_cuff\_inputs"}, no\_argument, NULL, \textcolor{charliteral}{'u'}\},
+   
+    \{ \textcolor{stringliteral}{"baudrate"}, required\_argument, NULL, \textcolor{charliteral}{'B'}\},
+    \{ \textcolor{stringliteral}{"set\_watchdog"}, required\_argument, NULL, \textcolor{charliteral}{'W'}\},
+    \{ \textcolor{stringliteral}{"polling"}, no\_argument, NULL, \textcolor{charliteral}{'P'}\},
+    \{ NULL, no\_argument, NULL, 0 \}
+\}
+\end{DoxyCode}

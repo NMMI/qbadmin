@@ -1,6 +1,8 @@
+// ----------------------------------------------------------------------------
 // BSD 3-Clause License
 
-// Copyright (c) 2017, qbrobotics
+// Copyright (c) 2016, qbrobotics
+// Copyright (c) 2017, Centro "E.Piaggio"
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -27,6 +29,19 @@
 // CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// POSSIBILITY OF SUCH DAMAGE.
+// ----------------------------------------------------------------------------
+
+/**
+* \file         qbmove_test.c
+*
+* \brief        Command line tools file
+* \author       _Centro "E.Piaggio"_
+* \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
+* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
+*
+*/
+
 //=================================================================     includes
 
 #include "../../qbAPI/src/qbmove_communications.h"
@@ -50,7 +65,7 @@
 
 #define REPETITION_PER_CYCLE 2
 #define BATCH_CYCLES 5 //number of cycle after which have a pause
-#define DELAY 1000000	//in microseconds
+#define DELAY 1500000	//in microseconds
 #define LITTLE_DELAY 5000 //in microseconds
 #define PAUSE 30 //in seconds
 
@@ -149,7 +164,7 @@ int open_port() {
     fclose(file);
 
 
-    openRS485(&comm_settings_t, port, 2000000);
+    openRS485(&comm_settings_t, port);
     
     if(comm_settings_t.file_handle == INVALID_HANDLE_VALUE)
     {
@@ -173,7 +188,7 @@ int cycle() {
     signal(SIGINT, int_handler);
 
     // Activate motors
-    commActivate(&comm_settings_t, device_id, 0x03);
+    commActivate(&comm_settings_t, device_id, 1);
 
     // minimum stiffness
     for (i = 0; i < REPETITION_PER_CYCLE; i++) {
@@ -183,7 +198,7 @@ int cycle() {
         commSetPosStiff(&comm_settings_t, device_id, inputs);
         usleep(DELAY);
 
-        while((commGetMeasurements(&comm_settings_t, device_id, measurements_1) < 0));
+        while((commGetMeasurements(&comm_settings_t, device_id, measurements_1) > 0));
 
         inputs[0] = DEFAULT_SUP_LIMIT;
         inputs[1] = ZERO;
@@ -191,7 +206,7 @@ int cycle() {
         commSetPosStiff(&comm_settings_t, device_id, inputs);
         usleep(DELAY);
 
-        while((commGetMeasurements(&comm_settings_t, device_id, measurements_2) < 0));
+        while(commGetMeasurements(&comm_settings_t, device_id, measurements_2));
 
         printf("difference between output shaft and pulleys:\n1: %d\t2: %d\n", measurements_1[2] - measurements_1[0], measurements_2[2] - measurements_2[0]);
     }
@@ -210,7 +225,7 @@ int cycle() {
         commSetPosStiff(&comm_settings_t, device_id, inputs);
         usleep(DELAY);
 
-        while((commGetMeasurements(&comm_settings_t, device_id, measurements_1) < 0));
+        while((commGetMeasurements(&comm_settings_t, device_id, measurements_1) > 0));
 
         inputs[0] = DEFAULT_SUP_LIMIT;
         inputs[1] = (short int)(MAX_FORWARD_STIFFNESS * 0.8);
@@ -218,7 +233,7 @@ int cycle() {
         commSetPosStiff(&comm_settings_t, device_id, inputs);
         usleep(DELAY);
 
-        while((commGetMeasurements(&comm_settings_t, device_id, measurements_2) < 0));
+        while((commGetMeasurements(&comm_settings_t, device_id, measurements_2) > 0));
     }
 
     // set to zero
@@ -235,7 +250,7 @@ int cycle() {
         commSetPosStiff(&comm_settings_t, device_id, inputs);
         usleep(DELAY);
 
-        while((commGetMeasurements(&comm_settings_t, device_id, measurements_1) < 0));
+        while((commGetMeasurements(&comm_settings_t, device_id, measurements_1) > 0));
 
         inputs[0] = DEFAULT_SUP_LIMIT;
         inputs[1] = (short int)(MAX_REVERSE_STIFFNESS * 0.8);
@@ -243,7 +258,7 @@ int cycle() {
         commSetPosStiff(&comm_settings_t, device_id, inputs);
         usleep(DELAY);
 
-        while((commGetMeasurements(&comm_settings_t, device_id, measurements_2) < 0));
+        while((commGetMeasurements(&comm_settings_t, device_id, measurements_2) > 0));
     }
 
     // set to zero

@@ -1,3 +1,48 @@
+// ----------------------------------------------------------------------------
+// BSD 3-Clause License
+
+// Copyright (c) 2016, qbrobotics
+// Copyright (c) 2017, Centro "E.Piaggio"
+// All rights reserved.
+
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+
+// * Redistributions of source code must retain the above copyright notice, this
+//   list of conditions and the following disclaimer.
+
+// * Redistributions in binary form must reproduce the above copyright notice,
+//   this list of conditions and the following disclaimer in the documentation
+//   and/or other materials provided with the distribution.
+
+// * Neither the name of the copyright holder nor the names of its
+//   contributors may be used to endorse or promote products derived from
+//   this software without specific prior written permission.
+
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// POSSIBILITY OF SUCH DAMAGE.
+// ----------------------------------------------------------------------------
+
+/**
+* \file         qbparam.c
+*
+* \brief        Command line tools file
+* \author       _Centro "E.Piaggio"_
+* \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
+* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
+*
+* \details      With this file is possible to get or set firmware parameters.
+*/
+
 // --- INCLUDE ---
 #include "../../qbAPI/src/qbmove_communications.h"
 #include "definitions.h"
@@ -21,11 +66,11 @@ int calibrate();
 char get_or_set;
 comm_settings comm_settings_t;
 uint8_t device_id = BROADCAST_ID;
+static const char *optString = "";
 static const struct option longOpts[] = {
-    { "id", required_argument, NULL, 'i' },
+    { "id", required_argument, NULL, 0 },
     { NULL, no_argument, NULL, 0}
 };
-static const char *optString = "i:";
 
 /** Baudrate functions
  */
@@ -61,11 +106,8 @@ int main(int argc, char **argv) {
     uint8_t temp_char[4];
 
     opt = getopt_long(argc, argv, optString, longOpts, &longIndex);
-    switch(opt){
-    	case 'i':
-	    	sscanf(optarg, "%hhu", &device_id);
-		break;
-	}
+    if(!opt)
+        sscanf(optarg, "%hhu", &device_id);
 
     if(device_id)
         printf("\nUsing qbparam with ID: %hhu\n\n", device_id);
@@ -409,7 +451,6 @@ int open_port() {
     FILE *file;
     char port[255];
     int br = baudrate_reader();
-    int baudrate;
 
     file = fopen(QBMOVE_FILE, "r");
 
@@ -422,12 +463,8 @@ int open_port() {
 
     fclose(file);
 
-    if (br == BAUD_RATE_T_460800)
-        baudrate = 460800;
-    else
-        baudrate = 2000000;
-    
-    openRS485(&comm_settings_t, port, baudrate);
+
+    openRS485(&comm_settings_t, port);
 
     if(comm_settings_t.file_handle == INVALID_HANDLE_VALUE)
     {

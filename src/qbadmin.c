@@ -1,6 +1,8 @@
+// ----------------------------------------------------------------------------
 // BSD 3-Clause License
 
-// Copyright (c) 2017, qbrobotics
+// Copyright (c) 2016, qbrobotics
+// Copyright (c) 2017, Centro "E.Piaggio"
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -27,7 +29,35 @@
 // CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// POSSIBILITY OF SUCH DAMAGE.
+// ----------------------------------------------------------------------------
 
+/**
+* \file         qbadmin.c
+*
+* \brief        Command line tools file
+* \author       _Centro "E.Piaggio"_
+* \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
+* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
+*
+* \details      With this file is possible to command a terminal device.
+*/
+
+ /**
+* \mainpage     Command line tools
+*
+* \brief        Those functions allows to use the board through a serial port
+*
+* \author       _Centro "E.Piaggio"_
+* \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
+* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
+*
+* \date         October 01, 2017
+*
+* \details      This is a set of functions that allows to use the boards 
+*               via a serial port.
+*
+*/
 //==================================================================     defines
 
 
@@ -46,7 +76,6 @@
 #include <math.h>
 #include <signal.h>
 #include <assert.h>
-#include <time.h>
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <windows.h>
@@ -90,31 +119,31 @@ static const char *optString = "s:adgptvh?f:ljqxzkycbe:uoiW:PB:";
 
 struct global_args {
     int device_id;
-    int flag_set_inputs;            ///< ./qbmove -s option 
-    int flag_get_measurements;      ///< ./qbmove -g option 
-    int flag_activate;              ///< ./qbmove -a option 
-    int flag_deactivate;            ///< ./qbmove -d option 
-    int flag_ping;                  ///< ./qbmove -p option 
-    int flag_serial_port;           ///< ./qbmove -t option 
-    int flag_verbose;               ///< ./qbmove -v option 
-    int flag_file;                  ///< ./qbmove -f option 
-    int flag_log;                   ///< ./qbmove -l option
-    int flag_get_emg;               ///< ./handmove -q option to get the EMG sensors measurements 
-    int flag_set_zeros;             ///< ./qbmove -z option 
-    int flag_use_gen_sin;           ///< ./qbmove -y option
-    int flag_calibration;           ///< ./handmove -k option to start a series of hand closures and openings 
-    int flag_get_currents;          ///< ./qbmove -c option 
-    int flag_bootloader_mode;       ///< ./qbmove -b option 
-    int flag_set_pos_stiff;         ///< ./qbmove -e option 
-    int flag_get_velocities;        ///< ./qbmove -i option 
-    int flag_get_accelerations;     ///< ./qbmove -o option
-    int flag_set_cuff_inputs;       ///< ./qbmove -u option
-    int flag_set_baudrate;          ///< ./qbmove -R option 
-    int flag_set_watchdog;          ///< ./qbmove -W option 
-    int flag_polling;               ///< ./qbmove -P option 
-    int flag_baudrate;              ///< ./qbmove -B option 
-    int flag_get_joystick;          ///< ./handmove -j option
-    int flag_ext_drive;             ///< ./handmove -x option
+    int flag_set_inputs;            ///< ./qbadmin -s option 
+    int flag_get_measurements;      ///< ./qbadmin -g option 
+    int flag_activate;              ///< ./qbadmin -a option 
+    int flag_deactivate;            ///< ./qbadmin -d option 
+    int flag_ping;                  ///< ./qbadmin -p option 
+    int flag_serial_port;           ///< ./qbadmin -t option 
+    int flag_verbose;               ///< ./qbadmin -v option 
+    int flag_file;                  ///< ./qbadmin -f option 
+    int flag_log;                   ///< ./qbadmin -l option
+    int flag_get_emg;               ///< ./qbadmin -q option to get the EMG sensors measurements 
+    int flag_set_zeros;             ///< ./qbadmin -z option 
+    int flag_use_gen_sin;           ///< ./qbadmin -y option
+    int flag_calibration;           ///< ./qbadmin -k option to start a series of hand closures and openings 
+    int flag_get_currents;          ///< ./qbadmin -c option 
+    int flag_bootloader_mode;       ///< ./qbadmin -b option 
+    int flag_set_pos_stiff;         ///< ./qbadmin -e option 
+    int flag_get_velocities;        ///< ./qbadmin -i option 
+    int flag_get_accelerations;     ///< ./qbadmin -o option
+    int flag_set_cuff_inputs;       ///< ./qbadmin -u option
+    int flag_set_baudrate;          ///< ./qbadmin -R option 
+    int flag_set_watchdog;          ///< ./qbadmin -W option 
+    int flag_polling;               ///< ./qbadmin -P option 
+    int flag_baudrate;              ///< ./qbadmin -B option 
+    int flag_get_joystick;          ///< ./qbadmin -j option
+    int flag_ext_drive;             ///< ./qbadmin -x option
 
     short int inputs[NUM_OF_MOTORS];
     short int measurements[4];
@@ -150,7 +179,6 @@ uint8_t resolution[4];         // sensors resolution set on the board
 
 int ret;                                    //utility variable to store return values
 int aux_int;
-int error_count = 0;
 
 comm_settings comm_settings_1;
 
@@ -458,11 +486,8 @@ int main (int argc, char **argv)
             sensor_num = commGetMeasurements(&comm_settings_1, global_args.device_id, global_args.measurements);
 
             if(sensor_num < 0 || sensor_num > 4) {
-                error_count++;
-                if (error_count >=10) {
-                    printf("An error occurred or the device is not supported\n");
-                    break;
-                }
+                printf("An error occurred or the device is not supported\n");
+                break;
             }
             else {
                 printf("measurements:     ");
@@ -489,11 +514,8 @@ int main (int argc, char **argv)
             sensor_num = commGetVelocities(&comm_settings_1, global_args.device_id, global_args.velocities);
 
             if(sensor_num < 0 || sensor_num > 4) {
-                error_count++;
-                if (error_count >=10) {
-                    printf("An error occurred or the device is not supported\n");
-                    break;
-                }
+                printf("An error occurred or the device is not supported\n");
+                break;
             }
             else {
                 printf("velocities:     ");
@@ -518,11 +540,8 @@ int main (int argc, char **argv)
             sensor_num = commGetAccelerations(&comm_settings_1, global_args.device_id, global_args.accelerations);
 
             if(sensor_num < 0 || sensor_num > 4) {
-                error_count++;
-                if (error_count >=10) {
-                    printf("An error occurred or the device is not supported\n");
-                    break;
-                }
+                printf("An error occurred or the device is not supported\n");
+                break;
             }
             else {
                 printf("accelerations:     ");
@@ -543,11 +562,8 @@ int main (int argc, char **argv)
             ret = commGetJoystick(&comm_settings_1, global_args.device_id, global_args.joystick);
             
             if(ret < 0) {
-                error_count++;
-                if (error_count >=10) {
-                    printf("An error occurred or the device has no joystick\n");
-                    break;
-                }
+                printf("An error occurred or the device has no joystick\n");
+                break;
             }
             else {
                 printf("Joystick Meas - X:%hd  Y:%hd\n", global_args.joystick[0], global_args.joystick[1]);
@@ -640,11 +656,8 @@ int main (int argc, char **argv)
 
             // Getting EMG values
             if(commGetEmg(&comm_settings_1, global_args.device_id, global_args.emg) < 0) {
-                error_count++;
-                if (error_count >=10) {
-                    puts("An error occurred or the device has no EMG functionality");
-                    break;
-                }
+                puts("An error occurred or the device has no EMG functionality");
+                break;
             }
             if(global_args.flag_verbose) {
                 printf("Signal 1: %d\t Signal 2: %d\n", global_args.emg[0], global_args.emg[1]);
@@ -759,8 +772,6 @@ int main (int argc, char **argv)
         float phase_shift;                  // angular shift between sinusoids
         float total_time;                   // total execution time (if 0 takes
                                             //   number of values as parameter)
-        float working_cycle;
-        unsigned int pause_cycle;
         int num_values;                     // number of values (ignored if
                                             //   total time != 0)
 
@@ -774,21 +785,25 @@ int main (int argc, char **argv)
         int error_counter = 0;
         int do_once = 1;
         int sensor_num = 0;
-        char filename[35];
-        const int CYCLE = 1;
-        const int PAUSE = 0;
-        
-        int operation = CYCLE;
-        time_t t;
-        struct tm tm;
-        
+
+        if(global_args.flag_log) {
+            strcpy(global_args.log_file, "sin_log.csv");
+            global_args.log_file_fd = fopen(global_args.log_file, "w");
+        }
+
+        // CTRL-C handler
+        signal(SIGINT, int_handler);
+
+        if(global_args.flag_verbose) {
+           puts("Generate sinusoidal inputs\n");
+        }
+
         // opening file
         FILE* filep;
         filep = fopen(SIN_FILE, "r");
         if (filep == NULL) {
-            printf("Failed opening file 1\n");
+            printf("Failed opening file\n");
         }
-        // opening file
 
         fscanf(filep, "delta_t %f\n", &delta_t);
         fscanf(filep, "amplitude_1 %f\n", &amplitude_1);
@@ -799,134 +814,93 @@ int main (int argc, char **argv)
         fscanf(filep, "freq_2 %f\n", &freq_2);
         fscanf(filep, "phase_shift %f\n", &phase_shift);
         fscanf(filep, "total_time %f\n", &total_time);
-        fscanf(filep, "working_cycle %f\n", &working_cycle);
-        fscanf(filep, "pause_cycle %u\n", &pause_cycle);
         fscanf(filep, "num_values %d\n", &num_values);
-        
+
+        // closing file
         fclose(filep);
 
-        struct timeval start_test, end_test;
-        
-        gettimeofday(&start_test, &foo);
-        gettimeofday(&end_test, &foo);
-        while(timevaldiff(&start_test, &end_test) < ((total_time - 1) * 1000000)) {
-            switch (operation) {
-            case CYCLE:
-                    
-                t = time(NULL);
-                tm = *localtime(&t);
-
-                if(global_args.flag_log) {
-                    sprintf(filename, "sin_log_%d-%d-%d_%d-%d-%d.csv", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
-                    strcpy(global_args.log_file, filename);
-                    global_args.log_file_fd = fopen(global_args.log_file, "w");
-                }
-
-                // CTRL-C handler
-                signal(SIGINT, int_handler);
-
-                if(global_args.flag_verbose) {
-                    puts("Generate sinusoidal inputs\n");
-                }
-
-                // if working_cycle is set, calculate num_values
-                if (total_time != 0) {
-                    num_values = (working_cycle*1000)/delta_t;
-                    printf("Num_values: %d\n", num_values);
-                }
-
-                // calculate periods
-                period_1 = 1/freq_1;
-                period_2 = 1/freq_2;
-
-                // deg to rad
-                phase_shift = phase_shift * PI / 180.0;
-
-                // calculate increment for every step
-                inc_1 = (2 * PI) / (period_1 / (delta_t / 1000.0));
-                inc_2 = (2 * PI) / (period_2 / (delta_t / 1000.0));
-
-                // activate motors
-                commActivate(&comm_settings_1, global_args.device_id, 1);
-
-                // retrieve begin time
-                gettimeofday(&begin, &foo);
-
-                for(i=0; i<num_values; i++) {
-                    // wait for next value
-                    while (1) {
-                        gettimeofday(&t_act, &foo);
-                        if (timevaldiff(&begin, &t_act) >= i * delta_t * 1000) {
-                            break;
-                        }
-                    }
-                    commGetCurrents(&comm_settings_1, global_args.device_id, global_args.currents);
-                    printf("Time: %ld, C1: %d, C2: %d\n", timevaldiff(&begin, &t_act), global_args.currents[0], global_args.currents[1]);
-                    // update measurements
-                    sensor_num = commGetMeasurements(&comm_settings_1, global_args.device_id, global_args.measurements);
-                    if (sensor_num < 0) {
-                        error_counter++;
-                    }
-
-                    // update inputs
-                    global_args.inputs[0] = (sin(angle_1)*amplitude_1 + bias_1);
-                    global_args.inputs[1] = (sin(angle_2 + phase_shift)*amplitude_2 + bias_2);
-
-                    // set new inputs
-                    commSetInputs(&comm_settings_1, global_args.device_id, global_args.inputs);
-
-                    // update angle position
-                    angle_1 += inc_1;
-                    angle_2 += inc_2;
-
-                    //Get currents to save in log file
-                    commGetCurrents(&comm_settings_1, global_args.device_id, global_args.currents);
-                    //log file
-                    if (global_args.flag_log) {
-                        if (do_once){
-                            fprintf(global_args.log_file_fd, "t(ms)\tI[0]\tI[1]\tM[0]\tM[1]\tM[2]\tC[0]\tC[1]\n");
-                            do_once = 0;
-                        }
-                        fprintf(global_args.log_file_fd, "%ld\t", timevaldiff(&begin, &t_act)/1000);
-                        fprintf(global_args.log_file_fd, "%d\t%d\t", global_args.inputs[0], global_args.inputs[1]);
-                        for (k = 0; k < sensor_num; k++) {
-                            fprintf(global_args.log_file_fd, "%d\t", global_args.measurements[k]);
-                        }
-                        fprintf(global_args.log_file_fd, "%d\t%d\n",
-                        global_args.currents[0], global_args.currents[1]);
-                    }
-                    if(i == (num_values - 1)) {
-
-                        // get time at the end of for cycle
-                        gettimeofday(&end, &foo);
-
-                        // reset motor  position
-                        global_args.inputs[0] = 0;
-                        global_args.inputs[1] = 0;
-                        commSetInputs(&comm_settings_1, global_args.device_id,
-                                global_args.inputs);
-
-                        printf("total time (millisec): %f\n", timevaldiff(&begin, &end)/1000.0);
-                        printf("Error counter: %d\n", error_counter);
-                        operation = PAUSE;
-                    }
-                }
-                break;
-                    
-            case PAUSE:
-                    printf("\n+++ PAUSE +++\n");
-                    gettimeofday(&begin, &foo);
-                    while(1) {
-                        gettimeofday(&t_act, &foo);
-                        if (timevaldiff(&begin, &t_act) >= (pause_cycle * 1000000))
-                            break;
-                    }
-                    operation = CYCLE;
-                    do_once = 1;
-                break;
-            }
-            gettimeofday(&end_test, &foo); 
+        // if total_time set, calculate num_values
+        if (total_time != 0) {
+            num_values = (total_time*1000)/delta_t;
+            printf("Num_values: %d\n", num_values);
         }
+
+        // calculate periods
+        period_1 = 1/freq_1;
+        period_2 = 1/freq_2;
+
+        // deg to rad
+        phase_shift = phase_shift * PI / 180.0;
+
+        // calculate increment for every step
+        inc_1 = (2 * PI) / (period_1 / (delta_t / 1000.0));
+        inc_2 = (2 * PI) / (period_2 / (delta_t / 1000.0));
+
+        // activate motors
+        commActivate(&comm_settings_1, global_args.device_id, 1);
+
+        // retrieve begin time
+        gettimeofday(&begin, &foo);
+
+        for(i=0; i<num_values; i++) {
+            // wait for next value
+            while (1) {
+                gettimeofday(&t_act, &foo);
+                if (timevaldiff(&begin, &t_act) >= i * delta_t * 1000) {
+                    break;
+                }
+            }
+            printf("Time: %ld\n", timevaldiff(&begin, &t_act));
+            // update measurements
+            sensor_num = commGetMeasurements(&comm_settings_1, global_args.device_id,
+                    global_args.measurements);
+            if (sensor_num < 0) {
+                error_counter++;
+            }
+
+            // update inputs
+            global_args.inputs[0] = (sin(angle_1)*amplitude_1 + bias_1);
+            global_args.inputs[1] = (sin(angle_2 + phase_shift)*amplitude_2 + bias_2);
+
+            // set new inputs
+            commSetInputs(&comm_settings_1, global_args.device_id, global_args.inputs);
+
+            // update angle position
+            angle_1 += inc_1;
+            angle_2 += inc_2;
+
+            //Get currents to save in log file
+            commGetCurrents(&comm_settings_1, global_args.device_id, global_args.currents);
+            //log file
+            if (global_args.flag_log) {
+                if (do_once){
+                    fprintf(global_args.log_file_fd, "t(ms)\t I[0],\tI[1],\tM[0],\tM[1],\tM[2],\tC[0],\tC[1]\n");
+                    do_once = 0;
+                }
+		fprintf(global_args.log_file_fd, "%ld\t", timevaldiff(&begin, &t_act)/1000);
+                fprintf(global_args.log_file_fd, "%d,\t%d\t",
+                    global_args.inputs[0], global_args.inputs[1]);
+                for (k = 0; k < sensor_num; k++) {
+                    fprintf(global_args.log_file_fd, "%d,\t", global_args.measurements[k]);
+                }
+                fprintf(global_args.log_file_fd, "%d,\t%d\n",
+                    global_args.currents[0], global_args.currents[1]);
+            }
+
+        }
+
+        // get time at the end of for cycle
+        gettimeofday(&end, &foo);
+
+        // reset motor  position
+        global_args.inputs[0] = 0;
+        global_args.inputs[1] = 0;
+        commSetInputs(&comm_settings_1, global_args.device_id,
+                global_args.inputs);
+
+        printf("total time (millisec): %f\n", timevaldiff(&begin, &end)/1000.0);
+        printf("Error counter: %d\n", error_counter);
+
     }
 
 
@@ -1250,7 +1224,7 @@ int open_port() {
             openRS485(&comm_settings_1, port , B2000000);
     #else
         if (global_args.BaudRate == BAUD_RATE_T_460800)
-            openRS485(&comm_settings_1, port , 460800);
+           openRS485(&comm_settings_1, port , 460800);
         else
             openRS485(&comm_settings_1, port , 2000000);
     #endif
@@ -1520,7 +1494,7 @@ void display_usage( void )
     puts(" -W, --set_watchdog               Set up Watchdog ");
     puts("                                  [0 - 500] with step rate of 2 [cs]).");
     puts(" -P, --polling                    Call a polling search.");
-    puts(" -B, --baudrate <value>           Set qbmove Baudrate communication "); 
+    puts(" -B, --baudrate <value>           Set Baudrate communication "); 
     puts("                                  [460800 or 2000000].");
     puts(" -b, --bootloader                 Enter bootloader mode to update firmware.");
     puts(" -v, --verbose                    Verbose mode.");
@@ -1532,10 +1506,6 @@ void display_usage( void )
     puts(" -a, --activate                   Activate the QB Move.");
     puts(" -d, --deactivate                 Deactivate the QB Move.");
     puts(" -z, --set_zeros                  Set zero position for all sensors");
-    puts("");
-    puts("================================================================================");
-    puts("qbMove exclusive commands");
-    puts("================================================================================");
     puts(" -e, --set_pos_stiff <pos,stiff>  Set position (degree) and stiffness (\%)");
     puts(" -y, --use_gen_sin                Sinusoidal inputs using sin.conf file");
     puts(" -f, --file <filename>            Pass a CSV file as input");
@@ -1551,11 +1521,7 @@ void display_usage( void )
     puts("                                  a file named filename_log");
     //puts(" -u, --set_cuff_modality          Activates the Cuff modality if the device is a");
     //puts("                                  Cuff");
-    puts("");
-    puts("================================================================================");
-    puts("Hand exclusive commands");
-    puts("================================================================================");
-    puts(" -k, --calibration                Makes a series of opening and closing.");
+	puts(" -k, --calibration                Makes a series of opening and closing.");
     puts(" -q, --get_emg                    Get EMG values and save them in a file");
     puts("                                  defined in \"definitions.h\". Use -v option");
     puts("                                  to display values in the console too.");
