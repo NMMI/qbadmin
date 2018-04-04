@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
     int i,j,k;
     char c_choice;
 
-    uint8_t aux_string[2000];
+    uint8_t aux_string[5000];
     int value_size;
     int num_of_values;
     int num_of_params;
