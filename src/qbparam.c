@@ -2,7 +2,7 @@
 // BSD 3-Clause License
 
 // Copyright (c) 2016, qbrobotics
-// Copyright (c) 2017, Centro "E.Piaggio"
+// Copyright (c) 2017-2018, Centro "E.Piaggio"
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@
 * \brief        Command line tools file
 * \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
-* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
+* \copyright    (C) 2017-2018 Centro "E.Piaggio". All rights reserved.
 *
 * \details      With this file is possible to get or set firmware parameters.
 */
@@ -66,11 +66,6 @@ int calibrate();
 char get_or_set;
 comm_settings comm_settings_t;
 uint8_t device_id = BROADCAST_ID;
-static const char *optString = "";
-static const struct option longOpts[] = {
-    { "id", required_argument, NULL, 0 },
-    { NULL, no_argument, NULL, 0}
-};
 
 /** Baudrate functions
  */
@@ -81,14 +76,14 @@ int main(int argc, char **argv) {
     int i,j,k;
     char c_choice;
 
-    uint8_t aux_string[5000];
+    uint8_t aux_string[5000] = "";
+
     int value_size;
     int num_of_values;
     int num_of_params;
     int menu_number[50];
     int index;
-    int opt;
-    int longIndex = 0;
+
     int data_type[50];
     int data_dim[50];
     int data_size[50];
@@ -105,9 +100,19 @@ int main(int argc, char **argv) {
     double aux_double[4];
     uint8_t temp_char[4];
 
-    opt = getopt_long(argc, argv, optString, longOpts, &longIndex);
-    if(!opt)
-        sscanf(optarg, "%hhu", &device_id);
+
+
+
+
+
+
+
+	// Get device ID
+	if (argc > 1)
+    {
+        sscanf(argv[1],"%d",&device_id);
+		printf("Communicating with device %d\n", device_id);
+    }
 
     if(device_id)
         printf("\nUsing qbparam with ID: %hhu\n\n", device_id);
@@ -123,6 +128,7 @@ int main(int argc, char **argv) {
 
 
 //===============================================================     MAIN MENU
+
     printMainMenu();
     scanf("%c", &c_choice);
 
@@ -156,8 +162,14 @@ int main(int argc, char **argv) {
         num_of_values = 0;
         commGetParamList(&comm_settings_t, device_id, index, NULL, value_size, num_of_values, aux_string);
         
+
         // The packet returned in aux_string is composed as follows
         // [':'][':'][ID][LEN][CMD][PARAM_NUM][...]
+
+
+
+
+
 
         num_of_params = aux_string[5];
 
@@ -174,6 +186,7 @@ int main(int argc, char **argv) {
                 aux_uint16[j] = 0; aux_int32[j] = 0; aux_uint32[j] = 0; aux_float[j] = 0.0;
                 aux_double[j] = 0.0;
             }
+
             // For each parameter is associated a size, which is the number of bytes of that parameter, depending on its type
             switch(data_type[i]){
                 case TYPE_FLAG:
@@ -253,6 +266,7 @@ int main(int argc, char **argv) {
                         }
                         aux_float[k] = (*(float *) &temp_char);
                         sprintf(data_string, " %f", aux_float[k]);
+
                         strcat(tmp_string, data_string);
                     }
                 break;
