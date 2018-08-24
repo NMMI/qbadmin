@@ -71,7 +71,7 @@ for the make utility is in `C:\Program Files (x86)\GnuWin32\bin`).
 ## Compile the software
 
 Fisrt of all you need to download the
-[*qbAPI*](https://github.com/qbrobotics/qbapi)
+[*qbAPI*](https://github.com/NMMI/qbapi)
 repository and be sure to have a file tree organised like this (remove the `-master` suffix):
 
 * your_workingcopy
