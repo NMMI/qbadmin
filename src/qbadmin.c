@@ -2,7 +2,7 @@
 // BSD 3-Clause License
 
 // Copyright (c) 2016, qbrobotics
-// Copyright (c) 2017-2018, Centro "E.Piaggio"
+// Copyright (c) 2017-2019, Centro "E.Piaggio"
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@
 * \brief        Command line tools file
 * \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
-* \copyright    (C) 2017-2018 Centro "E.Piaggio". All rights reserved.
+* \copyright    (C) 2017-2019 Centro "E.Piaggio". All rights reserved.
 *
 * \details      With this file is possible to command a terminal device.
 */
@@ -50,9 +50,9 @@
 *
 * \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
-* \copyright    (C) 2017-2018 Centro "E.Piaggio". All rights reserved.
+* \copyright    (C) 2017-2019 Centro "E.Piaggio". All rights reserved.
 *
-* \date         May 03, 2018
+* \date         January 25th, 2019
 *
 * \details      This is a set of functions that allows to use the boards 
 *               via a serial port.
@@ -64,6 +64,7 @@
 //=================================================================     includes
 
 #include "../../qbAPI/src/qbmove_communications.h"
+#include "../../qbAPI/src/cp_communications.h"
 #include "definitions.h"
 
 #include <stdio.h>
@@ -91,6 +92,7 @@ static const struct option longOpts[] = {
     { "activate", no_argument, NULL, 'a' },
     { "deactivate", no_argument, NULL, 'd' },
     { "ping", no_argument, NULL, 'p' },
+	{ "reading_ping", no_argument, NULL, 'r' },
     { "serial_port", no_argument, NULL, 't' },
     { "verbose", no_argument, NULL, 'v' },
     { "help", no_argument, NULL, 'h' },
@@ -112,10 +114,13 @@ static const struct option longOpts[] = {
     { "baudrate", required_argument, NULL, 'B'},
     { "set_watchdog", required_argument, NULL, 'W'},
     { "polling", no_argument, NULL, 'P'},
+	{"get_imu_readings", no_argument, NULL, 'Q'},
+	{"get_adc_raw", no_argument, NULL, 'A'},
+	{"get_encoder_raw", no_argument, NULL, 'E'},
     { NULL, no_argument, NULL, 0 }
 };
 
-static const char *optString = "s:adgptvh?f:ljqxzkycbe:uoiW:PB:";
+static const char *optString = "s:adgprtvh?f:ljqxzkycbe:uoiW:PB:QAE";
 
 struct global_args {
     int device_id;
@@ -124,6 +129,7 @@ struct global_args {
     int flag_activate;              ///< ./qbadmin -a option 
     int flag_deactivate;            ///< ./qbadmin -d option 
     int flag_ping;                  ///< ./qbadmin -p option 
+	int flag_reading_ping;			///< ./qbmove -r option
     int flag_serial_port;           ///< ./qbadmin -t option 
     int flag_verbose;               ///< ./qbadmin -v option 
     int flag_file;                  ///< ./qbadmin -f option 
@@ -144,6 +150,9 @@ struct global_args {
     int flag_baudrate;              ///< ./qbadmin -B option 
     int flag_get_joystick;          ///< ./qbadmin -j option
     int flag_ext_drive;             ///< ./qbadmin -x option
+	int flag_get_imu_readings;		///< Additional -Q option
+	int flag_get_adc_raw;			///< Additional -A option
+	int flag_get_encoder_raw;		///< Additional -E option
 
     short int inputs[NUM_OF_MOTORS];
     short int measurements[4];
@@ -159,10 +168,16 @@ struct global_args {
     short int joystick[2];             ///< Analog joystick measurements
     short int ext_drive;
 
+	int n_imu;
+	uint8_t* ids;
+	uint8_t* imu_table;
+	uint8_t* mag_cal;
     short int BaudRate;
     int save_baurate;
     short int WDT;
-
+	
+	short int* adc_raw;
+	
     FILE* emg_file;
     FILE* log_file_fd;
 } global_args;  //multiple boards on multiple usb
@@ -240,12 +255,14 @@ int main (int argc, char **argv)
     int sensor_num = 0;
 
     char aux_char;
+	char aux_imu[3];
 
     // initializations
 
     global_args.device_id               = 0;
     global_args.flag_serial_port        = 0;
     global_args.flag_ping               = 0;
+	global_args.flag_reading_ping       = 0;
     global_args.flag_verbose            = 0;
     global_args.flag_activate           = 0;
     global_args.flag_deactivate         = 0;
@@ -268,6 +285,9 @@ int main (int argc, char **argv)
     global_args.flag_get_joystick       = 0;
     global_args.flag_ext_drive          = 0;
     global_args.flag_get_emg            = 0;
+	global_args.flag_get_imu_readings   = 0;
+	global_args.flag_get_adc_raw   		= 0;
+	global_args.flag_get_encoder_raw	= 0;
 
     global_args.BaudRate                = baudrate_reader();
 
@@ -303,6 +323,8 @@ int main (int argc, char **argv)
                 break;
             case 'p':
                 global_args.flag_ping = 1;
+			case 'r':
+                global_args.flag_reading_ping = 1;
                 break;
             case 'v':
                 global_args.flag_verbose = 1;
@@ -372,6 +394,15 @@ int main (int argc, char **argv)
                 global_args.flag_baudrate = 1;
                 global_args.save_baurate = (int) aux[0];
                 break;
+			case 'Q':
+				global_args.flag_get_imu_readings = 1;
+				break;
+			case 'A':
+				global_args.flag_get_adc_raw = 1;
+				break;
+			case 'E':
+				global_args.flag_get_encoder_raw = 1;
+				break;				
             case 'h':
             case '?':
             default:
@@ -422,13 +453,34 @@ int main (int argc, char **argv)
         if(global_args.flag_verbose)
             puts("Pinging serial port.");
 
-        if(global_args.device_id) {
-            commGetInfo(&comm_settings_1, global_args.device_id, INFO_ALL, aux_string);
-        } else {
-            RS485GetInfo(&comm_settings_1,  aux_string);
-        }
+		
+		if(global_args.device_id) {
+			commGetInfo(&comm_settings_1, global_args.device_id, INFO_ALL, aux_string);
 
-       puts(aux_string);
+		}
+		else {
+			RS485GetInfo(&comm_settings_1,  aux_string);
+
+		}
+		
+		puts(aux_string);
+
+
+        if(global_args.flag_verbose)
+            puts("Closing the application.");
+
+        return 0;
+    }
+	
+	if(global_args.flag_reading_ping)
+    {
+        if(global_args.flag_verbose)
+            puts("Pinging serial port.");
+
+		
+		commGetInfo(&comm_settings_1, global_args.device_id, INFO_READING, aux_string);
+		
+		puts(aux_string);
 
         if(global_args.flag_verbose)
             puts("Closing the application.");
@@ -1079,7 +1131,238 @@ int main (int argc, char **argv)
 
     }
 
+	
+	//=========================================================  get imu readings
 
+    if(global_args.flag_get_imu_readings)
+    {
+		uint8_t aux_string[5000];
+		uint8_t PARAM_SLOT_BYTES = 50;
+//		uint8_t NUM_SF_PARAMS = 3;
+		int num_of_params;
+		float* imu_values;
+		uint8_t num_imus_id_params = 7;
+		uint8_t num_mag_cal_params = 0;
+		uint8_t first_imu_parameter = 2;
+		uint8_t new_board = 1;
+		int i = 0;
+		
+		if (commGetIMUParamList(&comm_settings_1, global_args.device_id, 0, NULL, 0, 0, aux_string) < 0){
+			// If commGetIMUParamList returns -1, the connected board is a PSoC3 board instead of a STM32 or PSoC5 board
+			// so call the commGetParamList instead
+			new_board = 0;
+			commGetParamList(&comm_settings_1, global_args.device_id, 0, NULL, 0, 0, aux_string);
+			num_imus_id_params = 6;
+		}
+		
+		num_of_params = aux_string[5];
+		
+		//aux_string[6] <-> packet_data[2] on the firmware
+		global_args.n_imu = aux_string[8];
+		printf("Number of connected IMUs: %d\n", global_args.n_imu);
+		
+		// Compute number of read parameters depending on global_args.n_imu and
+		// update packet_length
+		num_mag_cal_params = (global_args.n_imu / 2);
+		if ( (global_args.n_imu - num_mag_cal_params*2) > 0 ) num_mag_cal_params++;
+
+		global_args.ids = (uint8_t *) calloc(global_args.n_imu, sizeof(uint8_t));
+		i = 0;
+		for (int k = 1; k <= num_imus_id_params; k++){
+			if (aux_string[k*PARAM_SLOT_BYTES + 8] != 255) {
+				global_args.ids[i] = aux_string[k*PARAM_SLOT_BYTES + 8];
+				i++;
+			}
+			if (aux_string[k*PARAM_SLOT_BYTES + 9] != 255) {
+				global_args.ids[i] = aux_string[k*PARAM_SLOT_BYTES + 9];
+				i++;
+			}
+			if (aux_string[k*PARAM_SLOT_BYTES + 10] != 255) {
+				global_args.ids[i] = aux_string[k*PARAM_SLOT_BYTES + 10];
+				i++;
+			}
+		}
+		
+		// Retrieve magnetometer calibration parameters
+		global_args.mag_cal = (uint8_t *) calloc(global_args.n_imu, 3*sizeof(uint8_t));
+		i = 0;
+		for (int k=1; k <= num_mag_cal_params; k++) {
+			global_args.mag_cal[3*i + 0] = aux_string[num_imus_id_params*PARAM_SLOT_BYTES + k*PARAM_SLOT_BYTES + 8];
+			global_args.mag_cal[3*i + 1] = aux_string[num_imus_id_params*PARAM_SLOT_BYTES + k*PARAM_SLOT_BYTES + 9];
+			global_args.mag_cal[3*i + 2] = aux_string[num_imus_id_params*PARAM_SLOT_BYTES + k*PARAM_SLOT_BYTES + 10];
+			printf("MAG PARAM: %d %d %d\n", global_args.mag_cal[3*i + 0], global_args.mag_cal[3*i + 1], global_args.mag_cal[3*i + 2]);
+			i++;
+			
+			if (aux_string[num_imus_id_params*PARAM_SLOT_BYTES + k*PARAM_SLOT_BYTES + 7] == 6) {
+				global_args.mag_cal[3*i + 0] = aux_string[num_imus_id_params*PARAM_SLOT_BYTES + k*PARAM_SLOT_BYTES + 11];
+				global_args.mag_cal[3*i + 1] = aux_string[num_imus_id_params*PARAM_SLOT_BYTES + k*PARAM_SLOT_BYTES + 12];
+				global_args.mag_cal[3*i + 2] = aux_string[num_imus_id_params*PARAM_SLOT_BYTES + k*PARAM_SLOT_BYTES + 13];
+				printf("MAG PARAM: %d %d %d\n", global_args.mag_cal[3*i + 0], global_args.mag_cal[3*i + 1], global_args.mag_cal[3*i + 2]);
+				i++;
+			}
+		}
+	
+		first_imu_parameter = 1 + num_imus_id_params + num_mag_cal_params + 1;
+		global_args.imu_table = (uint8_t *) calloc(global_args.n_imu, 5*sizeof(uint8_t));
+		for (int i=0; i< global_args.n_imu; i++){
+			global_args.imu_table[5*i + 0] = aux_string[first_imu_parameter*PARAM_SLOT_BYTES + 8 + 50*i];
+			global_args.imu_table[5*i + 1] = aux_string[first_imu_parameter*PARAM_SLOT_BYTES + 9 + 50*i];
+			global_args.imu_table[5*i + 2] = aux_string[first_imu_parameter*PARAM_SLOT_BYTES + 10 + 50*i];
+			global_args.imu_table[5*i + 3] = aux_string[first_imu_parameter*PARAM_SLOT_BYTES + 11 + 50*i];
+			global_args.imu_table[5*i + 4] = aux_string[first_imu_parameter*PARAM_SLOT_BYTES + 12 + 50*i];
+			printf("ID: %d - %d, %d, %d, %d, %d\n", global_args.ids[i], global_args.imu_table[5*i + 0], global_args.imu_table[5*i + 1], global_args.imu_table[5*i + 2], global_args.imu_table[5*i + 3], global_args.imu_table[5*i + 4]);
+			
+		}
+		
+		// Imu values is a (3 sensors x 3 axes + 4 + 1) x n_imu values
+		imu_values = (float *) calloc(global_args.n_imu, 3*3*sizeof(float)+4*sizeof(float)+sizeof(float));
+		
+		if (!new_board && global_args.n_imu > 1){
+			int idx = 0;
+			for (i = 0; i < global_args.n_imu; i++) {
+				if (global_args.imu_table[5*i + 3]){
+					idx++;
+				}
+				if (idx > 0) {
+					printf("\n[WARNING] Quaternion will not be read as it is computed only if there is ONLY 1 IMU connected to the board.\n\n");
+					return -1;
+				}
+			}
+		}
+
+		while(1){
+			
+			commGetImuReadings(&comm_settings_1, global_args.device_id, global_args.imu_table, global_args.mag_cal, global_args.n_imu, imu_values);
+
+			for (i = 0; i < global_args.n_imu; i++) {
+		
+				printf("IMU: %d\n", global_args.ids[i]);
+			
+				if (global_args.imu_table[5*i + 0]){
+					printf("Accelerometer\n");
+					printf("%f, %f, %f\n", imu_values[(3*3+4+1)*i], imu_values[(3*3+4+1)*i+1], imu_values[(3*3+4+1)*i+2]);
+				}
+				if (global_args.imu_table[5*i + 1]){
+					printf("Gyroscope\n");
+					printf("%f, %f, %f\n", imu_values[(3*3+4+1)*i+3], imu_values[(3*3+4+1)*i+4], imu_values[(3*3+4+1)*i+5]);
+				}
+				if (global_args.imu_table[5*i + 2] ){
+					printf("Magnetometer\n");
+					printf("%f, %f, %f\n", imu_values[(3*3+4+1)*i+6], imu_values[(3*3+4+1)*i+7], imu_values[(3*3+4+1)*i+8]);
+				}
+				if (global_args.imu_table[5*i + 3] ){
+					printf("Quaternion\n");
+					printf("%f, %f, %f, %f\n", imu_values[(3*3+4+1)*i+9], imu_values[(3*3+4+1)*i+10], imu_values[(3*3+4+1)*i+11], imu_values[(3*3+4+1)*i+12]);
+				}
+				if (global_args.imu_table[5*i + 4] ){
+					printf("Temperature\n");
+					printf("%f\n", imu_values[(3*3+4+1)*i+13]);
+				}
+				
+				printf("\n");				
+			}
+		}
+		
+	}
+	
+//=========================================================     get emg raw
+
+    if(global_args.flag_get_adc_raw)
+    {
+		uint8_t adc_map[100];
+		uint8_t tot_adc_channels = 0;
+		uint8_t used_adc_channels = 0;
+		int idx;
+		
+        if(global_args.flag_verbose)
+            puts("Getting adc raw values.");
+
+		commGetADCConf(&comm_settings_1, global_args.device_id, &tot_adc_channels, adc_map);
+		usleep(100000);
+		
+		printf("Number of ADC channels: %d\n", tot_adc_channels);
+		
+		for (int i=0; i< tot_adc_channels; i++) {
+			if (adc_map[i] == 1) {
+				used_adc_channels++;
+			}
+		}
+		
+		global_args.adc_raw = (short int *) calloc(used_adc_channels, sizeof(short int));
+		
+        while(1) {
+            if (commGetADCRawValues(&comm_settings_1, global_args.device_id, used_adc_channels, global_args.adc_raw) < 0) {
+                printf("An error occurred or the device is not supported\n");
+                break;
+            }
+            else {
+				idx = 0;
+                for (int i = 0; i < tot_adc_channels; i++) {
+					if (adc_map[i] == 1) {
+						printf("Raw %d: %d\n", i, (int)global_args.adc_raw[idx]);
+						idx++;
+					}
+                }
+                printf("\n");
+
+                usleep(100000);
+            }
+        }
+    }
+	
+	
+//=========================================================  get encoder raw
+
+    if(global_args.flag_get_encoder_raw)
+    {
+		uint8_t enc_map[100];
+		uint16_t* encoder_values;
+		uint8_t num_encoder_lines = 2;
+		uint8_t num_encoder_per_line = 5;
+		uint8_t num_encoder_conf_total = 0;
+		int idx;
+		
+		if(global_args.flag_verbose)
+            puts("Getting encoder raw values.");
+		
+		commGetEncoderConf(&comm_settings_1, global_args.device_id, &num_encoder_lines, &num_encoder_per_line, enc_map);
+		usleep(100000);
+		
+		printf("Number of Connected Encoder lines: %d\n", num_encoder_lines);
+		printf("Number of Connected Encoder per line: %d\n", num_encoder_per_line);
+
+		for (int i=0; i< num_encoder_lines; i++) {
+			for (int j=0; j < num_encoder_per_line; j++) {
+				num_encoder_conf_total += enc_map[i*num_encoder_per_line + j];
+				//printf("Line %d, Encoder %d -> %d\n", i, j+1, enc_map[i*num_encoder_per_line + j]);
+			}
+		}
+		
+		encoder_values = (uint16_t *) calloc(num_encoder_conf_total, sizeof(uint16_t));
+	
+		while(1){
+			
+			if (commGetEncoderRawValues(&comm_settings_1, global_args.device_id, num_encoder_conf_total, encoder_values) < 0) {
+				printf("An error occurred or the device is not supported\n");
+                break;
+			}
+			else {
+				idx = 0;
+                for (int i=0; i< num_encoder_lines; i++) {
+					for (int j=0; j < num_encoder_per_line; j++) {
+						if (enc_map[i*num_encoder_per_line + j] == 1) {
+							printf("Line %d, Encoder %d -> %d\n", i, j+1, (int)encoder_values[idx]);
+							idx++;
+						}
+					}
+                }
+				printf("\n");
+				usleep(100000);
+			
+			}
+		}		
+	}
+	
 //==========================     closing serial port and closing the application
 
 
@@ -1506,6 +1789,10 @@ void display_usage( void )
     puts(" -a, --activate                   Activate the QB Move.");
     puts(" -d, --deactivate                 Deactivate the QB Move.");
     puts(" -z, --set_zeros                  Set zero position for all sensors");
+    puts("");
+    puts("================================================================================");
+    puts("qbMove exclusive commands");
+    puts("================================================================================");
     puts(" -e, --set_pos_stiff <pos,stiff>  Set position (degree) and stiffness (\%)");
     puts(" -y, --use_gen_sin                Sinusoidal inputs using sin.conf file");
     puts(" -f, --file <filename>            Pass a CSV file as input");
@@ -1521,17 +1808,29 @@ void display_usage( void )
     puts("                                  a file named filename_log");
     //puts(" -u, --set_cuff_modality          Activates the Cuff modality if the device is a");
     //puts("                                  Cuff");
-	puts(" -k, --calibration                Makes a series of opening and closing.");
+    puts("");
+    puts("================================================================================");
+    puts("Hand exclusive commands");
+    puts("================================================================================");
+    puts(" -k, --calibration                Makes a series of opening and closing.");
     puts(" -q, --get_emg                    Get EMG values and save them in a file");
     puts("                                  defined in \"definitions.h\". Use -v option");
     puts("                                  to display values in the console too.");
     puts(" -x, --ext_drive                  Reads measurements and drives a second board.");
     puts(" -j, --get_joystick               Get joystick measurements.");
     puts("");
+    puts("================================================================================");
+    puts("Additional commands");
+    puts("================================================================================");
+	puts(" -Q, --get_imu_readings           Retrieve accelerometers, gyroscopes and magnetometers readings");
+	puts(" -m, --get_emg_raw				Retrieve emg raw values");
+	puts(" -E, --get_encoder_raw			Retrieve encoder raw values");
+	puts("");
     puts("--------------------------------------------------------------------------------");
     puts("Examples:");
     puts("");
     puts("  qbadmin -p                      Get info on whatever device is connected.");
+	puts("  qbadmin -r 						Get cycles info.");
     puts("  qbadmin -t                      Set up serial port.");
     puts("  qbadmin 65 -s 10,10             Set inputs of device 65 to 10 and 10.");
     puts("  qbadmin 65 -g                   Get measurements from device 65.");
