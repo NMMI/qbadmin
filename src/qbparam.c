@@ -99,8 +99,7 @@ int main(int argc, char **argv) {
     float aux_float[4]; 
     double aux_double[4];
     uint8_t temp_char[4];
-
-
+	uint8_t aux_str[50] = "";			// custom string
 
 
 
@@ -168,9 +167,6 @@ int main(int argc, char **argv) {
 
 
 
-
-
-
         num_of_params = aux_string[5];
 
         // The data, for a single parameter, is packed as follows
@@ -186,7 +182,7 @@ int main(int argc, char **argv) {
                 aux_uint16[j] = 0; aux_int32[j] = 0; aux_uint32[j] = 0; aux_float[j] = 0.0;
                 aux_double[j] = 0.0;
             }
-
+			
             // For each parameter is associated a size, which is the number of bytes of that parameter, depending on its type
             switch(data_type[i]){
                 case TYPE_FLAG:
@@ -281,6 +277,17 @@ int main(int argc, char **argv) {
                         strcat(tmp_string, data_string);
                     }
                 break;
+				case TYPE_STRING:								// Custom data type
+                    data_size[i] = 1;
+					strcat(tmp_string, " "); 
+                    for(k = 0; k < data_dim[i]; k++) {
+                        for(j = 0; j < data_size[i]; j++) {
+                            aux_uint8[k] += aux_string[i*PARAM_BYTE_SLOT + 8 + k * data_size[i] + data_size[i] - j - 1] << (8 * j);  
+                        }
+                        sprintf(data_string, "%c", aux_uint8[k]);
+                        strcat(tmp_string, data_string); 
+                    }
+                break;
 
             }
             // The parameter description is printed character by character until it reaches the end of the string
@@ -322,7 +329,7 @@ int main(int argc, char **argv) {
             // different and/or multiple readings must be done
             printf("Insert new parameters values\n");
             for(i = 0; i < data_dim[index - 1]; i++) {
-                if(data_type[index - 1] != TYPE_FLAG) {
+                if(data_type[index - 1] != TYPE_FLAG && data_type[index - 1] != TYPE_STRING) {
                     printf("Insert %d° parameter: \n", i+1);
                     switch(data_type[index - 1]) {
                         case TYPE_INT8:
@@ -358,13 +365,20 @@ int main(int argc, char **argv) {
                         break;
                     }
                 }
-                else {      // TYPE_FLAG is a uint8 but with a menu
-                    for(k = 0; aux_string[num_of_params * PARAM_BYTE_SLOT + 6 + (menu_number[index - 1] - 1) * PARAM_MENU_SLOT + k] != '\0'; k++)
-                        printf("%c", aux_string[num_of_params * PARAM_BYTE_SLOT + 6 + (menu_number[index - 1] - 1) * PARAM_MENU_SLOT + k]);
-                    scanf("%hhu", aux_uint8);
+                else {      
+					if(data_type[index - 1] == TYPE_FLAG){
+						// TYPE_FLAG is a uint8 but with a menu
+						for(k = 0; aux_string[num_of_params * PARAM_BYTE_SLOT + 6 + (menu_number[index - 1] - 1) * PARAM_MENU_SLOT + k] != '\0'; k++)
+							printf("%c", aux_string[num_of_params * PARAM_BYTE_SLOT + 6 + (menu_number[index - 1] - 1) * PARAM_MENU_SLOT + k]);
+						scanf("%hhu", aux_uint8);
+					}
                 }
-
             }
+			
+			if (data_type[index - 1] == TYPE_STRING) {		// custom data type		
+				scanf("%s", &aux_str);
+			}
+
             switch(data_type[index - 1]) {
                     case TYPE_FLAG:
                         commGetParamList(&comm_settings_t, device_id, index, aux_uint8, data_size[index - 1], data_dim[index - 1], NULL);
@@ -392,6 +406,9 @@ int main(int argc, char **argv) {
                     break;
                     case TYPE_DOUBLE:
                         commGetParamList(&comm_settings_t, device_id, index, aux_double, data_size[index - 1], data_dim[index - 1], NULL);
+                    break;
+					case TYPE_STRING:			// custom data type
+                        commGetParamList(&comm_settings_t, device_id, index, aux_str, data_size[index - 1], data_dim[index - 1], NULL);
                     break;
                 }
 

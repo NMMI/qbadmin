@@ -1237,7 +1237,8 @@ int main (int argc, char **argv)
 			for (i = 0; i < global_args.n_imu; i++) {
 		
 				printf("IMU: %d\n", global_args.ids[i]);
-			
+				usleep(10000);
+				
 				if (global_args.imu_table[5*i + 0]){
 					printf("Accelerometer\n");
 					printf("%f, %f, %f\n", imu_values[(3*3+4+1)*i], imu_values[(3*3+4+1)*i+1], imu_values[(3*3+4+1)*i+2]);
