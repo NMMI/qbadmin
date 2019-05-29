@@ -52,7 +52,8 @@
 
 #include <math.h>
 
-#define QBADMIN_VERSION "v7.0 Centro Piaggio"
+#define QBADMIN_VERSION "v 7.0 Centro Piaggio"
+#define NMMI_PARAM_VERSION "v 1.0 Centro Piaggio"
 
 #define NUM_OF_MOTORS 2
 #define NUM_OF_EMGS 2
@@ -84,3 +85,17 @@
 #define QBBACKUP_FILE "./../conf_files/qbbackup.conf"
 #define QBMOVE_FILE_BR "./../conf_files/qbmoveBR.conf"
 #define EMG_SAVED_VALUES "./../emg_values.csv"			///< Default location where the emg sensors values are saved
+
+
+//==============================================================================
+//                                                              STRUCTURES INDEX
+//==============================================================================
+// First digit: struct, Second digit: index, e.g. ST_MOTOR_0 10, ST_MOTOR_1 11    
+#define ST_DEVICE       0
+#define ST_MOTOR        10          
+#define ST_ENCODER      20
+#define ST_EMG          30
+#define ST_IMU          40
+#define ST_EXPANSION    50
+#define ST_USER         60
+#define ST_SH_SPEC      70   
