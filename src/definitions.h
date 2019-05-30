@@ -85,7 +85,8 @@
 #define QBBACKUP_FILE "./../conf_files/qbbackup.conf"
 #define QBMOVE_FILE_BR "./../conf_files/qbmoveBR.conf"
 #define EMG_SAVED_VALUES "./../emg_values.csv"			///< Default location where the emg sensors values are saved
-
+#define SD_PARAM_FILE	"./../SD_param.csv"
+#define SD_DATA_FILE	"./../SD_data.csv"
 
 //==============================================================================
 //                                                              STRUCTURES INDEX

@@ -117,10 +117,11 @@ static const struct option longOpts[] = {
 	{"get_imu_readings", no_argument, NULL, 'Q'},
 	{"get_adc_raw", no_argument, NULL, 'A'},
 	{"get_encoder_raw", no_argument, NULL, 'E'},
+	{"get_SD_files", no_argument, NULL, 'S'},
     { NULL, no_argument, NULL, 0 }
 };
 
-static const char *optString = "s:adgprtvh?f:ljqxzkycbe:uoiW:PB:QAE";
+static const char *optString = "s:adgprtvh?f:ljqxzkycbe:uoiW:PB:QAES";
 
 struct global_args {
     int device_id;
@@ -153,6 +154,7 @@ struct global_args {
 	int flag_get_imu_readings;		///< Additional -Q option
 	int flag_get_adc_raw;			///< Additional -A option
 	int flag_get_encoder_raw;		///< Additional -E option
+	int flag_get_SD_files;			///< Additional -S option
 
     short int inputs[NUM_OF_MOTORS];
     short int measurements[4];
@@ -177,6 +179,8 @@ struct global_args {
     short int WDT;
 	
 	short int* adc_raw;
+	FILE* SD_param_file;
+	FILE* SD_data_file;
 	
     FILE* emg_file;
     FILE* log_file_fd;
@@ -288,6 +292,7 @@ int main (int argc, char **argv)
 	global_args.flag_get_imu_readings   = 0;
 	global_args.flag_get_adc_raw   		= 0;
 	global_args.flag_get_encoder_raw	= 0;
+	global_args.flag_get_SD_files		= 0;
 
     global_args.BaudRate                = baudrate_reader();
 
@@ -402,7 +407,10 @@ int main (int argc, char **argv)
 				break;
 			case 'E':
 				global_args.flag_get_encoder_raw = 1;
-				break;				
+				break;	
+			case 'S':
+				global_args.flag_get_SD_files = 1;
+				break;					
             case 'h':
             case '?':
             default:
@@ -487,6 +495,44 @@ int main (int argc, char **argv)
 
         return 0;
     }
+		
+	if (global_args.flag_get_SD_files)
+	{
+		char str_param[10000] = "";
+		
+		if(global_args.flag_verbose)
+            puts("Getting SD parameters file.");
+		
+		commGetInfo(&comm_settings_1, global_args.device_id, GET_SD_PARAM, str_param);
+		
+		//puts(str_param);
+		
+		global_args.SD_param_file = fopen(SD_PARAM_FILE, "w");
+		fprintf(global_args.SD_param_file, "%s", str_param);
+		fclose(global_args.SD_param_file);
+		
+		printf("SD current parameters have been saved in %s file\n", SD_PARAM_FILE);
+		
+		char str_data[10000] = "";
+		
+		if(global_args.flag_verbose)
+            puts("Getting SD data file.");
+		
+		commGetInfo(&comm_settings_1, global_args.device_id, GET_SD_DATA, str_data);
+		
+		//puts(str_data);
+		
+		global_args.SD_data_file = fopen(SD_DATA_FILE, "w");
+		fprintf(global_args.SD_data_file, "%s", str_data);
+		fclose(global_args.SD_data_file);
+		
+		printf("SD current data have been saved in %s file\n", SD_DATA_FILE);
+		
+		if(global_args.flag_verbose)
+            puts("Closing the application.");
+		
+		return 0;
+	}
 
 
 //===============================================================     set inputs
