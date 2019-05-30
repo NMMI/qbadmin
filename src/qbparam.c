@@ -54,6 +54,8 @@
 #include <getopt.h>
 #include <stdint.h>
 
+#define NUM_OF_MAX_PARAMS   100
+
 // function declaration
 int port_selection();
 int open_port();
@@ -76,17 +78,17 @@ int main(int argc, char **argv) {
     int i,j,k;
     char c_choice;
 
-    uint8_t aux_string[5000] = "";
+    uint8_t aux_string[10000] = "";
 
     int value_size;
     int num_of_values;
     int num_of_params;
-    int menu_number[50];
+    int menu_number[NUM_OF_MAX_PARAMS];
     int index;
 
-    int data_type[50];
-    int data_dim[50];
-    int data_size[50];
+    int data_type[NUM_OF_MAX_PARAMS];
+    int data_dim[NUM_OF_MAX_PARAMS];
+    int data_size[NUM_OF_MAX_PARAMS];
     char data_string[20];
     char tmp_string[150] = "";
 
@@ -99,7 +101,7 @@ int main(int argc, char **argv) {
     float aux_float[4]; 
     double aux_double[4];
     uint8_t temp_char[4];
-	uint8_t aux_str[50] = "";			// custom string
+	uint8_t aux_str[100] = "";			// custom string
 
 
 
@@ -165,8 +167,6 @@ int main(int argc, char **argv) {
         // The packet returned in aux_string is composed as follows
         // [':'][':'][ID][LEN][CMD][PARAM_NUM][...]
 
-
-
         num_of_params = aux_string[5];
 
         // The data, for a single parameter, is packed as follows
@@ -194,6 +194,7 @@ int main(int argc, char **argv) {
                         /*sprintf(data_string, " %hhu", aux_uint8[k]);
                         strcat(tmp_string, data_string);*/
                     }
+                break;
                 case TYPE_INT8:
                     data_size[i] = 1;
                     for(k = 0; k < data_dim[i]; k++) {
@@ -302,6 +303,7 @@ int main(int argc, char **argv) {
                 menu_number[i] = aux_string[i * PARAM_BYTE_SLOT + 6 + data_size[i] * data_dim[i] + 2 + k + 1];
             else
                 menu_number[i] = -1;
+
             // If the parameter has associated a -1 to its menu_number, the parameter has not a menu.
 
             if(data_type[i] == TYPE_FLAG)
