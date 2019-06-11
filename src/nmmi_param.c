@@ -680,7 +680,7 @@ int port_selection() {
         num_ports = RS485listPorts(ports);
 
         if(num_ports) {
-            puts("\nChoose the serial port for your QB:\n");
+            puts("\nChoose the serial port for your NMMI board:\n");
 
             for(i = 0; i < num_ports; ++i) {
                 printf("[%d] - %s\n\n", i+1, ports[i]);

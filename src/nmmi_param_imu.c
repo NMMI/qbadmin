@@ -215,7 +215,12 @@ int main(int argc, char **argv) {
                         for(j = 0; j < data_size[i]; j++) {
                             aux_uint8[k] += aux_string[i*PARAM_BYTE_SLOT + 8 + k * data_size[i] + data_size[i] - j - 1] << (8 * j);  
                         }
-                        sprintf(data_string, " %hhu", aux_uint8[k]);
+                        if (aux_uint8[k] == 255){ 	// Not IMU Connected
+                        	sprintf(data_string, " %c", '-');
+                        }
+                        else {
+                        	sprintf(data_string, " %hhu", aux_uint8[k]);
+                        }
                         strcat(tmp_string, data_string); 
                     }
                 break;
@@ -418,7 +423,7 @@ int port_selection() {
         num_ports = RS485listPorts(ports);
 
         if(num_ports) {
-            puts("\nChoose the serial port for your QB:\n");
+            puts("\nChoose the serial port for your NMMI board:\n");
 
             for(i = 0; i < num_ports; ++i) {
                 printf("[%d] - %s\n\n", i+1, ports[i]);
@@ -478,8 +483,19 @@ int open_port() {
 
     fclose(file);
 
+    #if !(defined(_WIN32) || defined(_WIN64)) && !(defined(__APPLE__)) //only for linux
 
-    openRS485(&comm_settings_t, port);
+        if (br == BAUD_RATE_T_460800)
+            openRS485(&comm_settings_t, port , B460800);
+        else
+            openRS485(&comm_settings_t, port , B2000000);
+    #else
+        if (br == BAUD_RATE_T_460800)
+           openRS485(&comm_settings_t, port , 460800);
+        else
+            openRS485(&comm_settings_t, port , 2000000);
+    #endif
+
 
     if(comm_settings_t.file_handle == INVALID_HANDLE_VALUE)
     {
