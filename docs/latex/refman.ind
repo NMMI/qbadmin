@@ -1,8 +1,10 @@
 \begin{theindex}
 
   \item {baudrate\+\_\+reader}
+    \subitem {nmmi\+\_\+param.\+c}, 12
+    \subitem {nmmi\+\_\+param\+\_\+imu.\+c}, 13
     \subitem {qbadmin.\+c}, 15
-    \subitem {qbparam.\+c}, 23
+    \subitem {qbparam.\+c}, 17
 
   \indexspace
 
@@ -18,11 +20,6 @@
   \indexspace
 
   \item {global\+\_\+args}, 7
-  \item {global\+\_\+var}, 9
-
-  \indexspace
-
-  \item {hand\+\_\+demo.\+c}, 13
 
   \indexspace
 
@@ -35,15 +32,15 @@
 
   \indexspace
 
-  \item {long\+Opts}
+  \item {main}
     \subitem {qbadmin.\+c}, 16
-    \subitem {qbmove\+\_\+test.\+c}, 22
-    \subitem {qbparam.\+c}, 23
 
   \indexspace
 
-  \item {main}
-    \subitem {qbadmin.\+c}, 16
+  \item {nmmi\+\_\+param.\+c}, 11
+    \subitem {baudrate\+\_\+reader}, 12
+  \item {nmmi\+\_\+param\+\_\+imu.\+c}, 12
+    \subitem {baudrate\+\_\+reader}, 13
 
   \indexspace
 
@@ -58,15 +55,8 @@
     \subitem {int\+\_\+handler}, 15
     \subitem {int\+\_\+handler\+\_\+2}, 16
     \subitem {int\+\_\+handler\+\_\+3}, 16
-    \subitem {long\+Opts}, 16
     \subitem {main}, 16
-  \item {qbmove\+\_\+backup.\+c}, 17
-  \item {qbmove\+\_\+init.\+c}, 18
-  \item {qbmove\+\_\+pos\+\_\+stiff\+\_\+demo.\+c}, 20
-  \item {qbmove\+\_\+test.\+c}, 21
-    \subitem {long\+Opts}, 22
-  \item {qbparam.\+c}, 22
-    \subitem {baudrate\+\_\+reader}, 23
-    \subitem {long\+Opts}, 23
+  \item {qbparam.\+c}, 16
+    \subitem {baudrate\+\_\+reader}, 17
 
 \end{theindex}

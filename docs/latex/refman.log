@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.9.8)  3 NOV 2017 10:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.9.8)  26 JUN 2019 11:42
 entering extended mode
 **./refman.tex
 (refman.tex
@@ -1228,7 +1228,7 @@ LaTeX Font Info:    Font shape `T1/phv/m/it' in size <9> not available
 (Font)              Font shape `T1/phv/m/sl' tried instead on input line 11.
 LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
 (Font)              scaled to size 8.09995pt on input line 11.
- [7]) (structglobal__var.tex [8]) (structposition.tex) [9] [10
+ [7] [8]) (structposition.tex) [9] [10
 
 ]
 Chapter 5.
@@ -1238,97 +1238,7 @@ LaTeX Font Info:    Try loading font information for T1+pcr on input line 8.
 ("C:\Users\MattiaCP\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\t1pcr.fd
 "
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-) <definitions_8h__incl.pdf, id=51, 148.555pt x 156.585pt>
-File: definitions_8h__incl.pdf Graphic file (type pdf)
-
-<use definitions_8h__incl.pdf>
-Package pdftex.def Info: definitions_8h__incl.pdf used on input line 13.
-(pdftex.def)             Requested size: 148.0pt x 156.0064pt.
-
-<definitions_8h__dep__incl.pdf, id=52, 770.88pt x 156.585pt>
-File: definitions_8h__dep__incl.pdf Graphic file (type pdf)
-
-<use definitions_8h__dep__incl.pdf>
-Package pdftex.def Info: definitions_8h__dep__incl.pdf used on input line 20.
-(pdftex.def)             Requested size: 350.0pt x 71.09337pt.
- [11 <./definitions_8h__incl.pdf> <./definitions_8h__dep__incl.pdf
-
-pdfTeX warning: pdflatex (file ./definitions_8h__dep__incl.pdf): PDF inclusion:
- multiple pdfs with page group included in a single page
->]
-Underfull \hbox (badness 10000) detected at line 109
-[][][]
- []
-
-
-Underfull \hbox (badness 10000) detected at line 112
-[][][]
- []
-
-) (hand__demo_8c.tex
-<hand__demo_8c__incl.pdf, id=75, 941.5175pt x 223.83624pt>
-File: hand__demo_8c__incl.pdf Graphic file (type pdf)
-
-<use hand__demo_8c__incl.pdf>
-Package pdftex.def Info: hand__demo_8c__incl.pdf used on input line 19.
-(pdftex.def)             Requested size: 350.0pt x 83.20747pt.
- [12]
-Underfull \hbox (badness 10000) detected at line 63
-[][][]
- []
-
-
-Underfull \hbox (badness 10000) detected at line 66
-[][][]
- []
-
-) (qbadmin_8c.tex <qbadmin_8c__incl.pdf, id=79, 945.5325pt x 223.83624pt>
-File: qbadmin_8c__incl.pdf Graphic file (type pdf)
-
-<use qbadmin_8c__incl.pdf>
-Package pdftex.def Info: qbadmin_8c__incl.pdf used on input line 24.
-(pdftex.def)             Requested size: 350.0pt x 82.85568pt.
- [13 <./hand__demo_8c__incl.pdf>] [14 <./qbadmin_8c__incl.pdf>]
-Underfull \hbox (badness 10000) detected at line 97
-[][][]
- []
-
-
-Underfull \hbox (badness 10000) detected at line 100
-[][][]
- []
-
-LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 7.19995pt on input line 112.
-LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <8> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 118.
-LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <7> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 124.
-[15] [16]) (qbmove__backup_8c.tex
-<qbmove__backup_8c__incl.pdf, id=113, 694.595pt x 223.83624pt>
-File: qbmove__backup_8c__incl.pdf Graphic file (type pdf)
-
-<use qbmove__backup_8c__incl.pdf>
-Package pdftex.def Info: qbmove__backup_8c__incl.pdf used on input line 20.
-(pdftex.def)             Requested size: 350.0pt x 112.79219pt.
- [17 <./qbmove__backup_8c__incl.pdf>]
-Underfull \hbox (badness 10000) detected at line 91
-[][][]
- []
-
-
-Underfull \hbox (badness 10000) detected at line 94
-[][][]
- []
-
-) (qbmove__init_8c.tex
-<qbmove__init_8c__incl.pdf, id=126, 694.595pt x 223.83624pt>
-File: qbmove__init_8c__incl.pdf Graphic file (type pdf)
-
-<use qbmove__init_8c__incl.pdf>
-Package pdftex.def Info: qbmove__init_8c__incl.pdf used on input line 20.
-(pdftex.def)             Requested size: 350.0pt x 112.79219pt.
- [18]
+)) (nmmi__param_8c.tex [11]
 Underfull \hbox (badness 10000) detected at line 79
 [][][]
  []
@@ -1338,73 +1248,57 @@ Underfull \hbox (badness 10000) detected at line 82
 [][][]
  []
 
-) (qbmove__pos__stiff__demo_8c.tex
-<qbmove__pos__stiff__demo_8c__incl.pdf, id=130, 694.595pt x 223.83624pt>
-File: qbmove__pos__stiff__demo_8c__incl.pdf Graphic file (type pdf)
-
-<use qbmove__pos__stiff__demo_8c__incl.pdf>
-Package pdftex.def Info: qbmove__pos__stiff__demo_8c__incl.pdf used on input li
-ne 20.
-(pdftex.def)             Requested size: 350.0pt x 112.79219pt.
- [19 <./qbmove__init_8c__incl.pdf>]
-Underfull \hbox (badness 10000) detected at line 55
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 7.19995pt on input line 92.
+) (nmmi__param__imu_8c.tex [12]
+Underfull \hbox (badness 10000) detected at line 62
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 58
+Underfull \hbox (badness 10000) detected at line 65
 [][][]
  []
 
-) (qbmove__test_8c.tex
-<qbmove__test_8c__incl.pdf, id=143, 690.58pt x 223.83624pt>
-File: qbmove__test_8c__incl.pdf Graphic file (type pdf)
-
-<use qbmove__test_8c__incl.pdf>
-Package pdftex.def Info: qbmove__test_8c__incl.pdf used on input line 20.
-(pdftex.def)             Requested size: 350.0pt x 113.44455pt.
- [20 <./qbmove__pos__stiff__demo_8c__incl.pdf>]
-[21 <./qbmove__test_8c__incl.pdf>]
-Underfull \hbox (badness 10000) detected at line 86
+) (qbadmin_8c.tex [13]
+Underfull \hbox (badness 10000) detected at line 94
 [][][]
  []
 
-
-Underfull \hbox (badness 10000) detected at line 89
+[14]
+Underfull \hbox (badness 10000) detected at line 97
 [][][]
  []
 
-) (qbparam_8c.tex <qbparam_8c__incl.pdf, id=169, 690.58pt x 223.83624pt>
-File: qbparam_8c__incl.pdf Graphic file (type pdf)
-
-<use qbparam_8c__incl.pdf>
-Package pdftex.def Info: qbparam_8c__incl.pdf used on input line 20.
-(pdftex.def)             Requested size: 350.0pt x 113.44455pt.
- [22 <./qbparam_8c__incl.pdf>]
-Underfull \hbox (badness 10000) detected at line 71
+LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <8> not available
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 115.
+LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <7> not available
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 121.
+[15]) (qbparam_8c.tex [16]
+Underfull \hbox (badness 10000) detected at line 67
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 74
+Underfull \hbox (badness 10000) detected at line 70
 [][][]
  []
 
-) [23] [24
+) [17] [18
 
-] (refman.ind [25
+] (refman.ind [19
 
 
 
 ]) (refman.aux) ) 
 Here is how much of TeX's memory you used:
- 8397 strings out of 493334
- 128972 string characters out of 3128924
- 215470 words of memory out of 3000000
- 11657 multiletter control sequences out of 15000+200000
- 66021 words of font info for 85 fonts, out of 3000000 for 9000
+ 8273 strings out of 493334
+ 124388 string characters out of 3128924
+ 209799 words of memory out of 3000000
+ 11556 multiletter control sequences out of 15000+200000
+ 65722 words of font info for 84 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 53i,15n,92p,933b,412s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 53i,15n,92p,699b,406s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/MattiaCP/AppData/Local/Programs/MiKTeX 2.9/fonts/enc
 /dvips/fontname/8r.enc}<C:/Users/MattiaCP/AppData/Local/Programs/MiKTeX 2.9/fon
 ts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/MattiaCP/AppData/Local/Program
@@ -1417,9 +1311,9 @@ helvetic/uhvb8a.pfb><C:/Users/MattiaCP/AppData/Local/Programs/MiKTeX 2.9/fonts/
 type1/urw/helvetic/uhvb8ac.pfb><C:/Users/MattiaCP/AppData/Local/Programs/MiKTeX
  2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/MattiaCP/AppData/Local/Progr
 ams/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on refman.pdf (29 pages, 283232 bytes).
+Output written on refman.pdf (23 pages, 112252 bytes).
 PDF statistics:
- 221 PDF objects out of 1000 (max. 8388607)
+ 113 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

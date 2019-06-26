@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['joystick',['joystick',['../structglobal__args.html#a0cace64ae2459f06bc0bda1979b0c06f',1,'global_args']]]
+  ['main',['main',['../qbadmin_8c.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'qbadmin.c']]]
 ];

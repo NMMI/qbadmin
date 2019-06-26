@@ -61,6 +61,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -82,11 +83,15 @@ $(function() {
 Include dependency graph for qbparam.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="qbparam_8c__incl.png" border="0" usemap="#qbparam_8c" alt=""/></div>
-<map name="qbparam_8c" id="qbparam_8c">
-<area shape="rect" id="node3" href="definitions_8h.html" title="Definitions for board commands, parameters and packages. " alt="" coords="181,87,271,114"/>
-</map>
+<!-- MAP 0 -->
 </div>
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a1631ab57d507b38c3bd2bde962254ac4"><td class="memItemLeft" align="right" valign="top"><a id="a1631ab57d507b38c3bd2bde962254ac4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUM_OF_MAX_PARAMS</b>&#160;&#160;&#160;100</td></tr>
+<tr class="separator:a1631ab57d507b38c3bd2bde962254ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a3939d4ef4a0e2be02b1eb9e1994ec985"><td class="memItemLeft" align="right" valign="top"><a id="a3939d4ef4a0e2be02b1eb9e1994ec985"></a>
@@ -124,18 +129,13 @@ comm_settings&#160;</td><td class="memItemRight" valign="bottom"><b>comm_setting
 <tr class="memitem:aebf6cf4331fcc15f0d3ed0890e01a380"><td class="memItemLeft" align="right" valign="top"><a id="aebf6cf4331fcc15f0d3ed0890e01a380"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>device_id</b> = BROADCAST_ID</td></tr>
 <tr class="separator:aebf6cf4331fcc15f0d3ed0890e01a380"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b7271ddd60c22960c39ae6caf4d5254"><td class="memItemLeft" align="right" valign="top"><a id="a1b7271ddd60c22960c39ae6caf4d5254"></a>
-static const char *&#160;</td><td class="memItemRight" valign="bottom"><b>optString</b> = &quot;&quot;</td></tr>
-<tr class="separator:a1b7271ddd60c22960c39ae6caf4d5254"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a091f2d9683d6ef802780b360f66bad67"><td class="memItemLeft" align="right" valign="top">static const struct option&#160;</td><td class="memItemRight" valign="bottom"><b>longOpts</b> []</td></tr>
-<tr class="separator:a091f2d9683d6ef802780b360f66bad67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Command line tools file. </p>
 <dl class="section author"><dt>Author</dt><dd><em>Centro "E.Piaggio"</em> </dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>(C) 2012-2016 qbrobotics. All rights reserved. </dd>
 <dd>
-(C) 2017 Centro "E.Piaggio". All rights reserved.</dd></dl>
+(C) 2017-2018 Centro "E.Piaggio". All rights reserved.</dd></dl>
 <p>With this file is possible to get or set firmware parameters. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a872d84bb02f7d8f4617246f0c6d37c43"></a>
@@ -154,29 +154,6 @@ static const char *&#160;</td><td class="memItemRight" valign="bottom"><b>optStr
 </div><div class="memdoc">
 <p>Baudrate functions </p>
 
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="a091f2d9683d6ef802780b360f66bad67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a091f2d9683d6ef802780b360f66bad67">&#9670;&nbsp;</a></span>longOpts</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const struct option longOpts[]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    { <span class="stringliteral">&quot;id&quot;</span>, required_argument, NULL, 0 },</div><div class="line">    { NULL, no_argument, NULL, 0}</div><div class="line">}</div></div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

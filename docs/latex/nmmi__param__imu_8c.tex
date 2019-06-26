@@ -1,0 +1,79 @@
+\section{nmmi\+\_\+param\+\_\+imu.\+c File Reference}
+\label{nmmi__param__imu_8c}\index{nmmi\+\_\+param\+\_\+imu.\+c@{nmmi\+\_\+param\+\_\+imu.\+c}}
+
+
+Command line tools file.  
+
+
+{\ttfamily \#include \char`\"{}../../qb\+A\+P\+I/src/qbmove\+\_\+communications.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../qb\+A\+P\+I/src/cp\+\_\+communications.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}definitions.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$getopt.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+Include dependency graph for nmmi\+\_\+param\+\_\+imu.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\label{nmmi__param__imu_8c_a3939d4ef4a0e2be02b1eb9e1994ec985}} 
+int {\bfseries port\+\_\+selection} ()
+\item 
+\mbox{\label{nmmi__param__imu_8c_abe553924eef0ba8079dc745caf1f348c}} 
+int {\bfseries open\+\_\+port} ()
+\item 
+\mbox{\label{nmmi__param__imu_8c_a564e2594b1cf22357d72b2e2cf7fdaf3}} 
+int {\bfseries init\+Memory} ()
+\item 
+\mbox{\label{nmmi__param__imu_8c_af9dce1973196a5934ee5ec20ea417324}} 
+void {\bfseries print\+Main\+Menu} ()
+\item 
+\mbox{\label{nmmi__param__imu_8c_a9c4b081f1e1ad60def15811c71a936f2}} 
+void {\bfseries print\+Version} ()
+\item 
+\mbox{\label{nmmi__param__imu_8c_aa78cef14864eb28be4f47d1ebf0e29f1}} 
+int {\bfseries calibrate} ()
+\item 
+int \textbf{ baudrate\+\_\+reader} ()
+\item 
+\mbox{\label{nmmi__param__imu_8c_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int {\bfseries main} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\label{nmmi__param__imu_8c_a3c28322a1b5922f8c61d7cb3723b56b1}} 
+char {\bfseries get\+\_\+or\+\_\+set}
+\item 
+\mbox{\label{nmmi__param__imu_8c_a92153f4b70cd8ba4e9b502ccff8d28bf}} 
+comm\+\_\+settings {\bfseries comm\+\_\+settings\+\_\+t}
+\item 
+\mbox{\label{nmmi__param__imu_8c_aebf6cf4331fcc15f0d3ed0890e01a380}} 
+uint8\+\_\+t {\bfseries device\+\_\+id} = B\+R\+O\+A\+D\+C\+A\+S\+T\+\_\+\+ID
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Command line tools file. 
+
+\begin{DoxyAuthor}{Author}
+{\itshape Centro \char`\"{}\+E.\+Piaggio\char`\"{}} 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+(C) 2012-\/2016 qbrobotics. All rights reserved. 
+
+(C) 2017-\/2018 Centro \char`\"{}\+E.\+Piaggio\char`\"{}. All rights reserved.
+\end{DoxyCopyright}
+With this file is possible to get or set I\+MU parameters. 
+
+\subsection{Function Documentation}
+\mbox{\label{nmmi__param__imu_8c_a872d84bb02f7d8f4617246f0c6d37c43}} 
+\index{nmmi\+\_\+param\+\_\+imu.\+c@{nmmi\+\_\+param\+\_\+imu.\+c}!baudrate\+\_\+reader@{baudrate\+\_\+reader}}
+\index{baudrate\+\_\+reader@{baudrate\+\_\+reader}!nmmi\+\_\+param\+\_\+imu.\+c@{nmmi\+\_\+param\+\_\+imu.\+c}}
+\subsubsection{baudrate\+\_\+reader()}
+{\footnotesize\ttfamily int baudrate\+\_\+reader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Baudrate functions 

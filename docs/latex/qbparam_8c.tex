@@ -13,13 +13,14 @@ Command line tools file.
 {\ttfamily \#include $<$unistd.\+h$>$}\newline
 {\ttfamily \#include $<$getopt.\+h$>$}\newline
 {\ttfamily \#include $<$stdint.\+h$>$}\newline
-Include dependency graph for qbparam.\+c\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{qbparam_8c__incl}
-\end{center}
-\end{figure}
+Include dependency graph for qbparam.\+c\+:
+% FIG 0
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\label{qbparam_8c_a1631ab57d507b38c3bd2bde962254ac4}} 
+\#define {\bfseries N\+U\+M\+\_\+\+O\+F\+\_\+\+M\+A\+X\+\_\+\+P\+A\+R\+A\+MS}~100
+\end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -57,11 +58,6 @@ comm\+\_\+settings {\bfseries comm\+\_\+settings\+\_\+t}
 \item 
 \mbox{\label{qbparam_8c_aebf6cf4331fcc15f0d3ed0890e01a380}} 
 uint8\+\_\+t {\bfseries device\+\_\+id} = B\+R\+O\+A\+D\+C\+A\+S\+T\+\_\+\+ID
-\item 
-\mbox{\label{qbparam_8c_a1b7271ddd60c22960c39ae6caf4d5254}} 
-static const char $\ast$ {\bfseries opt\+String} = \char`\"{}\char`\"{}
-\item 
-static const struct option {\bfseries long\+Opts} [$\,$]
 \end{DoxyCompactItemize}
 
 
@@ -74,7 +70,7 @@ Command line tools file.
 \begin{DoxyCopyright}{Copyright}
 (C) 2012-\/2016 qbrobotics. All rights reserved. 
 
-(C) 2017 Centro \char`\"{}\+E.\+Piaggio\char`\"{}. All rights reserved.
+(C) 2017-\/2018 Centro \char`\"{}\+E.\+Piaggio\char`\"{}. All rights reserved.
 \end{DoxyCopyright}
 With this file is possible to get or set firmware parameters. 
 
@@ -86,18 +82,3 @@ With this file is possible to get or set firmware parameters.
 {\footnotesize\ttfamily int baudrate\+\_\+reader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 Baudrate functions 
-
-\subsection{Variable Documentation}
-\mbox{\label{qbparam_8c_a091f2d9683d6ef802780b360f66bad67}} 
-\index{qbparam.\+c@{qbparam.\+c}!long\+Opts@{long\+Opts}}
-\index{long\+Opts@{long\+Opts}!qbparam.\+c@{qbparam.\+c}}
-\subsubsection{long\+Opts}
-{\footnotesize\ttfamily const struct option long\+Opts[$\,$]\hspace{0.3cm}{\ttfamily [static]}}
-
-{\bfseries Initial value\+:}
-\begin{DoxyCode}
-= \{
-    \{ \textcolor{stringliteral}{"id"}, required\_argument, NULL, 0 \},
-    \{ NULL, no\_argument, NULL, 0\}
-\}
-\end{DoxyCode}

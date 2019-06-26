@@ -74,19 +74,14 @@ $(function() {
 Include dependency graph for definitions.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="definitions_8h__incl.png" border="0" usemap="#definitions_8h" alt=""/></div>
+<map name="definitions_8h" id="definitions_8h">
+</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="definitions_8h__dep__incl.png" border="0" usemap="#definitions_8hdep" alt=""/></div>
 <map name="definitions_8hdep" id="definitions_8hdep">
-<area shape="rect" id="node2" href="hand__demo_8c.html" title="Demonstration file. " alt="" coords="5,80,105,107"/>
-<area shape="rect" id="node3" href="qbadmin_8c.html" title="Command line tools file. " alt="" coords="130,80,213,107"/>
-<area shape="rect" id="node4" href="qbmove__backup_8c.html" title="Command line tools file. " alt="" coords="237,80,364,107"/>
-<area shape="rect" id="node5" href="qbmove__init_8c.html" title="Command line tools file. " alt="" coords="389,80,490,107"/>
-<area shape="rect" id="node6" href="qbmove__pos__stiff__demo_8c.html" title="Command line tools file. " alt="" coords="514,80,685,107"/>
-<area shape="rect" id="node7" href="qbmove__test_8c.html" title="Command line tools file. " alt="" coords="709,80,815,107"/>
-<area shape="rect" id="node8" href="qbparam_8c.html" title="Command line tools file. " alt="" coords="839,80,922,107"/>
 </map>
 </div>
 </div>
@@ -95,8 +90,11 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a82178bde559e31158313c53e55709f7b"><td class="memItemLeft" align="right" valign="top"><a id="a82178bde559e31158313c53e55709f7b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>QBADMIN_VERSION</b>&#160;&#160;&#160;&quot;v6.1.0&quot;</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>QBADMIN_VERSION</b>&#160;&#160;&#160;&quot;v 7.0 Centro Piaggio&quot;</td></tr>
 <tr class="separator:a82178bde559e31158313c53e55709f7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2df364f88287df7e654ee05b9422af45"><td class="memItemLeft" align="right" valign="top"><a id="a2df364f88287df7e654ee05b9422af45"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NMMI_PARAM_VERSION</b>&#160;&#160;&#160;&quot;v 1.0 Centro Piaggio&quot;</td></tr>
+<tr class="separator:a2df364f88287df7e654ee05b9422af45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39ac50737c1ee7d5b723b2597fdf6f26"><td class="memItemLeft" align="right" valign="top"><a id="a39ac50737c1ee7d5b723b2597fdf6f26"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NUM_OF_MOTORS</b>&#160;&#160;&#160;2</td></tr>
 <tr class="separator:a39ac50737c1ee7d5b723b2597fdf6f26"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,13 +171,43 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="definitions_8h.html#ab1563f614ecc2b82f97cd65b88217bd9">EMG_SAVED_VALUES</a>&#160;&#160;&#160;&quot;./../emg_values.csv&quot;</td></tr>
 <tr class="memdesc:ab1563f614ecc2b82f97cd65b88217bd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default location where the emg sensors values are saved. <br /></td></tr>
 <tr class="separator:ab1563f614ecc2b82f97cd65b88217bd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2513ef83a48e5c1877ba58db6b6326d6"><td class="memItemLeft" align="right" valign="top"><a id="a2513ef83a48e5c1877ba58db6b6326d6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SD_PARAM_FILE</b>&#160;&#160;&#160;&quot;./../SD_param.csv&quot;</td></tr>
+<tr class="separator:a2513ef83a48e5c1877ba58db6b6326d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95bdc203708a970d7dd52ecf7b2f3814"><td class="memItemLeft" align="right" valign="top"><a id="a95bdc203708a970d7dd52ecf7b2f3814"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SD_DATA_FILE</b>&#160;&#160;&#160;&quot;./../SD_data.csv&quot;</td></tr>
+<tr class="separator:a95bdc203708a970d7dd52ecf7b2f3814"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f8f4a24628c7191c9adde97ae751bf2"><td class="memItemLeft" align="right" valign="top"><a id="a5f8f4a24628c7191c9adde97ae751bf2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_DEVICE</b>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a5f8f4a24628c7191c9adde97ae751bf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a911881bfa4a82a79f351f7a8a8ea40d1"><td class="memItemLeft" align="right" valign="top"><a id="a911881bfa4a82a79f351f7a8a8ea40d1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_MOTOR</b>&#160;&#160;&#160;10</td></tr>
+<tr class="separator:a911881bfa4a82a79f351f7a8a8ea40d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a642639720f787f90dab85f94d4be660c"><td class="memItemLeft" align="right" valign="top"><a id="a642639720f787f90dab85f94d4be660c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_ENCODER</b>&#160;&#160;&#160;20</td></tr>
+<tr class="separator:a642639720f787f90dab85f94d4be660c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afca454140c3233621eaa719a25a1c4b5"><td class="memItemLeft" align="right" valign="top"><a id="afca454140c3233621eaa719a25a1c4b5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_EMG</b>&#160;&#160;&#160;30</td></tr>
+<tr class="separator:afca454140c3233621eaa719a25a1c4b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f71b4081fa44d0458fa27e891527315"><td class="memItemLeft" align="right" valign="top"><a id="a6f71b4081fa44d0458fa27e891527315"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_IMU</b>&#160;&#160;&#160;40</td></tr>
+<tr class="separator:a6f71b4081fa44d0458fa27e891527315"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aacefdd9f8dddbb7b55bcd39bf22792"><td class="memItemLeft" align="right" valign="top"><a id="a3aacefdd9f8dddbb7b55bcd39bf22792"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_EXPANSION</b>&#160;&#160;&#160;50</td></tr>
+<tr class="separator:a3aacefdd9f8dddbb7b55bcd39bf22792"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16d74d98ce4fcdfb20501e89e37ff053"><td class="memItemLeft" align="right" valign="top"><a id="a16d74d98ce4fcdfb20501e89e37ff053"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_USER</b>&#160;&#160;&#160;60</td></tr>
+<tr class="separator:a16d74d98ce4fcdfb20501e89e37ff053"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a788bae111bb48b9aa005ecf765ce1e94"><td class="memItemLeft" align="right" valign="top"><a id="a788bae111bb48b9aa005ecf765ce1e94"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_SH_SPEC</b>&#160;&#160;&#160;70</td></tr>
+<tr class="separator:a788bae111bb48b9aa005ecf765ce1e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Definitions for board commands, parameters and packages. </p>
 <dl class="section author"><dt>Author</dt><dd><em>Centro "E.Piaggio"</em> </dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>(C) 2012-2016 qbrobotics. All rights reserved. </dd>
 <dd>
-(C) 2017 Centro "E.Piaggio". All rights reserved.</dd></dl>
+(C) 2017-2019 Centro "E.Piaggio". All rights reserved.</dd></dl>
 <p>This file is included in the board firmware, in its libraries and applications. It contains all definitions that are necessary for the contruction of communication packages.</p>
 <p>It includes definitions for all of the device commands, parameters and also the size of answer packages. </p>
 </div></div><!-- contents -->

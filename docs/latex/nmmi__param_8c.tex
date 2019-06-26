@@ -1,0 +1,94 @@
+\section{nmmi\+\_\+param.\+c File Reference}
+\label{nmmi__param_8c}\index{nmmi\+\_\+param.\+c@{nmmi\+\_\+param.\+c}}
+
+
+Command line tools file.  
+
+
+{\ttfamily \#include \char`\"{}../../qb\+A\+P\+I/src/qbmove\+\_\+communications.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}definitions.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$getopt.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+Include dependency graph for nmmi\+\_\+param.\+c\+:
+% FIG 0
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\label{nmmi__param_8c_a1631ab57d507b38c3bd2bde962254ac4}} 
+\#define {\bfseries N\+U\+M\+\_\+\+O\+F\+\_\+\+M\+A\+X\+\_\+\+P\+A\+R\+A\+MS}~100
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\label{nmmi__param_8c_a3939d4ef4a0e2be02b1eb9e1994ec985}} 
+int {\bfseries port\+\_\+selection} ()
+\item 
+\mbox{\label{nmmi__param_8c_abe553924eef0ba8079dc745caf1f348c}} 
+int {\bfseries open\+\_\+port} ()
+\item 
+\mbox{\label{nmmi__param_8c_a564e2594b1cf22357d72b2e2cf7fdaf3}} 
+int {\bfseries init\+Memory} ()
+\item 
+\mbox{\label{nmmi__param_8c_af9dce1973196a5934ee5ec20ea417324}} 
+void {\bfseries print\+Main\+Menu} ()
+\item 
+\mbox{\label{nmmi__param_8c_a9c4b081f1e1ad60def15811c71a936f2}} 
+void {\bfseries print\+Version} ()
+\item 
+\mbox{\label{nmmi__param_8c_a1edee49f4af1f72d451c8700b51395d9}} 
+void {\bfseries sort\+\_\+params\+\_\+asc} (int $\ast$, int $\ast$, int $\ast$, int)
+\item 
+\mbox{\label{nmmi__param_8c_a594967f0b7d02a5c69ef34df63860de2}} 
+void {\bfseries retrieve\+\_\+section\+\_\+str} (int, char $\ast$)
+\item 
+int \textbf{ baudrate\+\_\+reader} ()
+\item 
+\mbox{\label{nmmi__param_8c_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int {\bfseries main} (int argc, char $\ast$$\ast$argv)
+\item 
+\mbox{\label{nmmi__param_8c_a24aea326e519e8711ce6918e603439e3}} 
+static int {\bfseries compar} (const void $\ast$a, const void $\ast$b)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\label{nmmi__param_8c_a3c28322a1b5922f8c61d7cb3723b56b1}} 
+char {\bfseries get\+\_\+or\+\_\+set}
+\item 
+\mbox{\label{nmmi__param_8c_a92153f4b70cd8ba4e9b502ccff8d28bf}} 
+comm\+\_\+settings {\bfseries comm\+\_\+settings\+\_\+t}
+\item 
+\mbox{\label{nmmi__param_8c_aebf6cf4331fcc15f0d3ed0890e01a380}} 
+uint8\+\_\+t {\bfseries device\+\_\+id} = B\+R\+O\+A\+D\+C\+A\+S\+T\+\_\+\+ID
+\item 
+\mbox{\label{nmmi__param_8c_a9c35d8df08d413b2a31818fbd72a71bd}} 
+int $\ast$ {\bfseries base\+\_\+arr}
+\item 
+\mbox{\label{nmmi__param_8c_a87e551dce9c6faed6b8fe67542957aa3}} 
+int $\ast$ {\bfseries param\+\_\+idx\+\_\+arr}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Command line tools file. 
+
+\begin{DoxyAuthor}{Author}
+{\itshape Centro \char`\"{}\+E.\+Piaggio\char`\"{}} 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+(C) 2019 Centro \char`\"{}\+E.\+Piaggio\char`\"{}. All rights reserved.
+\end{DoxyCopyright}
+With this file is possible to get or set firmware parameters with a new interface based on old qbparam tool. 
+
+\subsection{Function Documentation}
+\mbox{\label{nmmi__param_8c_a872d84bb02f7d8f4617246f0c6d37c43}} 
+\index{nmmi\+\_\+param.\+c@{nmmi\+\_\+param.\+c}!baudrate\+\_\+reader@{baudrate\+\_\+reader}}
+\index{baudrate\+\_\+reader@{baudrate\+\_\+reader}!nmmi\+\_\+param.\+c@{nmmi\+\_\+param.\+c}}
+\subsubsection{baudrate\+\_\+reader()}
+{\footnotesize\ttfamily int baudrate\+\_\+reader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Baudrate functions 

@@ -6,6 +6,7 @@ Command line tools file.
 
 
 {\ttfamily \#include \char`\"{}../../qb\+A\+P\+I/src/qbmove\+\_\+communications.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../qb\+A\+P\+I/src/cp\+\_\+communications.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}definitions.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$stdio.\+h$>$}\newline
 {\ttfamily \#include $<$stdint.\+h$>$}\newline
@@ -17,13 +18,8 @@ Command line tools file.
 {\ttfamily \#include $<$math.\+h$>$}\newline
 {\ttfamily \#include $<$signal.\+h$>$}\newline
 {\ttfamily \#include $<$assert.\+h$>$}\newline
-Include dependency graph for qbadmin.\+c\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{qbadmin_8c__incl}
-\end{center}
-\end{figure}
+Include dependency graph for qbadmin.\+c\+:
+% FIG 0
 \subsection*{Data Structures}
 \begin{DoxyCompactItemize}
 \item 
@@ -63,10 +59,11 @@ int \textbf{ main} (int argc, char $\ast$$\ast$argv)
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
+\mbox{\label{qbadmin_8c_a091f2d9683d6ef802780b360f66bad67}} 
 static const struct option {\bfseries long\+Opts} [$\,$]
 \item 
 \mbox{\label{qbadmin_8c_a1b7271ddd60c22960c39ae6caf4d5254}} 
-static const char $\ast$ {\bfseries opt\+String} = \char`\"{}s\+:adgptvh?f\+:ljqxzkycbe\+:uoi\+W\+:\+P\+B\+:\char`\"{}
+static const char $\ast$ {\bfseries opt\+String} = \char`\"{}s\+:adgprtvh?f\+:ljqxzkycbe\+:uoi\+W\+:\+P\+B\+:\+Q\+A\+ES\char`\"{}
 \item 
 \mbox{\label{qbadmin_8c_ac8e0866643ba994eff3e2fa3203885e0}} 
 struct \textbf{ global\+\_\+args} {\bfseries global\+\_\+args}
@@ -100,7 +97,7 @@ Command line tools file.
 \begin{DoxyCopyright}{Copyright}
 (C) 2012-\/2016 qbrobotics. All rights reserved. 
 
-(C) 2017 Centro \char`\"{}\+E.\+Piaggio\char`\"{}. All rights reserved.
+(C) 2017-\/2019 Centro \char`\"{}\+E.\+Piaggio\char`\"{}. All rights reserved.
 \end{DoxyCopyright}
 With this file is possible to command a terminal device. 
 
@@ -156,43 +153,3 @@ Handles the ctrl+c interruption to save the emg sensors measurements into a file
 {\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
 
 main loop 
-
-\subsection{Variable Documentation}
-\mbox{\label{qbadmin_8c_a091f2d9683d6ef802780b360f66bad67}} 
-\index{qbadmin.\+c@{qbadmin.\+c}!long\+Opts@{long\+Opts}}
-\index{long\+Opts@{long\+Opts}!qbadmin.\+c@{qbadmin.\+c}}
-\subsubsection{long\+Opts}
-{\footnotesize\ttfamily const struct option long\+Opts[$\,$]\hspace{0.3cm}{\ttfamily [static]}}
-
-{\bfseries Initial value\+:}
-\begin{DoxyCode}
-= \{
-    \{ \textcolor{stringliteral}{"set\_inputs"}, required\_argument, NULL, \textcolor{charliteral}{'s'} \},
-    \{ \textcolor{stringliteral}{"get\_measurements"}, no\_argument, NULL, \textcolor{charliteral}{'g'} \},
-    \{ \textcolor{stringliteral}{"activate"}, no\_argument, NULL, \textcolor{charliteral}{'a'} \},
-    \{ \textcolor{stringliteral}{"deactivate"}, no\_argument, NULL, \textcolor{charliteral}{'d'} \},
-    \{ \textcolor{stringliteral}{"ping"}, no\_argument, NULL, \textcolor{charliteral}{'p'} \},
-    \{ \textcolor{stringliteral}{"serial\_port"}, no\_argument, NULL, \textcolor{charliteral}{'t'} \},
-    \{ \textcolor{stringliteral}{"verbose"}, no\_argument, NULL, \textcolor{charliteral}{'v'} \},
-    \{ \textcolor{stringliteral}{"help"}, no\_argument, NULL, \textcolor{charliteral}{'h'} \},
-    \{ \textcolor{stringliteral}{"file"}, required\_argument, NULL, \textcolor{charliteral}{'f'}\},
-    \{ \textcolor{stringliteral}{"log"}, no\_argument, NULL, \textcolor{charliteral}{'l'}\},
-    \{ \textcolor{stringliteral}{"get\_emg"}, no\_argument, NULL, \textcolor{charliteral}{'q'}\},
-    \{ \textcolor{stringliteral}{"set\_zeros"}, no\_argument, NULL, \textcolor{charliteral}{'z'}\},
-    \{ \textcolor{stringliteral}{"use\_gen\_sin"}, no\_argument, NULL, \textcolor{charliteral}{'y'}\},
-    \{ \textcolor{stringliteral}{"get\_currents"}, no\_argument, NULL, \textcolor{charliteral}{'c'}\},
-    \{ \textcolor{stringliteral}{"calibration"}, no\_argument, NULL, \textcolor{charliteral}{'k'}\},
-    \{ \textcolor{stringliteral}{"bootloader"}, no\_argument, NULL, \textcolor{charliteral}{'b'}\},
-    \{ \textcolor{stringliteral}{"joystick"}, no\_argument, NULL, \textcolor{charliteral}{'j'}\},
-    \{ \textcolor{stringliteral}{"external drive"}, no\_argument, NULL, \textcolor{charliteral}{'x'}\},
-    \{ \textcolor{stringliteral}{"set\_pos\_stiff"}, required\_argument, NULL, \textcolor{charliteral}{'e'}\},
-    \{ \textcolor{stringliteral}{"get\_velocities"}, no\_argument, NULL, \textcolor{charliteral}{'i'}\},
-    \{ \textcolor{stringliteral}{"get\_accelerations"}, no\_argument, NULL, \textcolor{charliteral}{'o'}\},
-    \{ \textcolor{stringliteral}{"set\_cuff\_inputs"}, no\_argument, NULL, \textcolor{charliteral}{'u'}\},
-   
-    \{ \textcolor{stringliteral}{"baudrate"}, required\_argument, NULL, \textcolor{charliteral}{'B'}\},
-    \{ \textcolor{stringliteral}{"set\_watchdog"}, required\_argument, NULL, \textcolor{charliteral}{'W'}\},
-    \{ \textcolor{stringliteral}{"polling"}, no\_argument, NULL, \textcolor{charliteral}{'P'}\},
-    \{ NULL, no\_argument, NULL, 0 \}
-\}
-\end{DoxyCode}

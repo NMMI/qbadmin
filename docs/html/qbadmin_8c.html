@@ -73,6 +73,7 @@ $(function() {
 <p>Command line tools file.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;../../qbAPI/src/qbmove_communications.h&quot;</code><br />
+<code>#include &quot;../../qbAPI/src/cp_communications.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="definitions_8h_source.html">definitions.h</a>&quot;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
@@ -88,9 +89,7 @@ $(function() {
 Include dependency graph for qbadmin.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="qbadmin_8c__incl.png" border="0" usemap="#qbadmin_8c" alt=""/></div>
-<map name="qbadmin_8c" id="qbadmin_8c">
-<area shape="rect" id="node3" href="definitions_8h.html" title="Definitions for board commands, parameters and packages. " alt="" coords="181,87,271,114"/>
-</map>
+<!-- MAP 0 -->
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -131,10 +130,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>baudrate_writer</b> (c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a091f2d9683d6ef802780b360f66bad67"><td class="memItemLeft" align="right" valign="top">static const struct option&#160;</td><td class="memItemRight" valign="bottom"><b>longOpts</b> []</td></tr>
+<tr class="memitem:a091f2d9683d6ef802780b360f66bad67"><td class="memItemLeft" align="right" valign="top"><a id="a091f2d9683d6ef802780b360f66bad67"></a>
+static const struct option&#160;</td><td class="memItemRight" valign="bottom"><b>longOpts</b> []</td></tr>
 <tr class="separator:a091f2d9683d6ef802780b360f66bad67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b7271ddd60c22960c39ae6caf4d5254"><td class="memItemLeft" align="right" valign="top"><a id="a1b7271ddd60c22960c39ae6caf4d5254"></a>
-static const char *&#160;</td><td class="memItemRight" valign="bottom"><b>optString</b> = &quot;s:adgptvh?f:ljqxzkycbe:uoiW:PB:&quot;</td></tr>
+static const char *&#160;</td><td class="memItemRight" valign="bottom"><b>optString</b> = &quot;s:adgprtvh?f:ljqxzkycbe:uoiW:PB:QAES&quot;</td></tr>
 <tr class="separator:a1b7271ddd60c22960c39ae6caf4d5254"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8e0866643ba994eff3e2fa3203885e0"><td class="memItemLeft" align="right" valign="top"><a id="ac8e0866643ba994eff3e2fa3203885e0"></a>
 struct <a class="el" href="structglobal__args.html">global_args</a>&#160;</td><td class="memItemRight" valign="bottom"><b>global_args</b></td></tr>
@@ -163,7 +163,7 @@ comm_settings&#160;</td><td class="memItemRight" valign="bottom"><b>comm_setting
 <dl class="section author"><dt>Author</dt><dd><em>Centro "E.Piaggio"</em> </dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>(C) 2012-2016 qbrobotics. All rights reserved. </dd>
 <dd>
-(C) 2017 Centro "E.Piaggio". All rights reserved.</dd></dl>
+(C) 2017-2019 Centro "E.Piaggio". All rights reserved.</dd></dl>
 <p>With this file is possible to command a terminal device. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a872d84bb02f7d8f4617246f0c6d37c43"></a>
@@ -326,29 +326,6 @@ comm_settings&#160;</td><td class="memItemRight" valign="bottom"><b>comm_setting
 </div><div class="memdoc">
 <p>main loop </p>
 
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="a091f2d9683d6ef802780b360f66bad67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a091f2d9683d6ef802780b360f66bad67">&#9670;&nbsp;</a></span>longOpts</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const struct option longOpts[]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    { <span class="stringliteral">&quot;set_inputs&quot;</span>, required_argument, NULL, <span class="charliteral">&#39;s&#39;</span> },</div><div class="line">    { <span class="stringliteral">&quot;get_measurements&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;g&#39;</span> },</div><div class="line">    { <span class="stringliteral">&quot;activate&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;a&#39;</span> },</div><div class="line">    { <span class="stringliteral">&quot;deactivate&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;d&#39;</span> },</div><div class="line">    { <span class="stringliteral">&quot;ping&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;p&#39;</span> },</div><div class="line">    { <span class="stringliteral">&quot;serial_port&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;t&#39;</span> },</div><div class="line">    { <span class="stringliteral">&quot;verbose&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;v&#39;</span> },</div><div class="line">    { <span class="stringliteral">&quot;help&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;h&#39;</span> },</div><div class="line">    { <span class="stringliteral">&quot;file&quot;</span>, required_argument, NULL, <span class="charliteral">&#39;f&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;log&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;l&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;get_emg&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;q&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;set_zeros&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;z&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;use_gen_sin&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;y&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;get_currents&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;c&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;calibration&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;k&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;bootloader&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;b&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;joystick&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;j&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;external drive&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;x&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;set_pos_stiff&quot;</span>, required_argument, NULL, <span class="charliteral">&#39;e&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;get_velocities&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;i&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;get_accelerations&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;o&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;set_cuff_inputs&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;u&#39;</span>},</div><div class="line">   </div><div class="line">    { <span class="stringliteral">&quot;baudrate&quot;</span>, required_argument, NULL, <span class="charliteral">&#39;B&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;set_watchdog&quot;</span>, required_argument, NULL, <span class="charliteral">&#39;W&#39;</span>},</div><div class="line">    { <span class="stringliteral">&quot;polling&quot;</span>, no_argument, NULL, <span class="charliteral">&#39;P&#39;</span>},</div><div class="line">    { NULL, no_argument, NULL, 0 }</div><div class="line">}</div></div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->
