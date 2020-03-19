@@ -1,4 +1,4 @@
-// Copyright (c) 2019, Mattia Poggiani.
+// Copyright (c) 2019-2020, Mattia Poggiani.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 *
 * \brief        Command line tools file
 * \author       _Centro "E.Piaggio"_
-* \copyright    (C) 2019 Centro "E.Piaggio". All rights reserved.
+* \copyright    (C) 2019-2020 Centro "E.Piaggio". All rights reserved.
 *
 * \details      With this file is possible to get or set firmware parameters 
 *				with a new interface based on old qbparam tool.
@@ -159,6 +159,9 @@ int main(int argc, char **argv) {
 		else if (!strcmp(submenu, "SH") || !strcmp(submenu, "softhand")){
 			show_section = ST_SH_SPEC;
 		}
+        else if (!strcmp(submenu, "FB") || !strcmp(submenu, "feedback")){
+            show_section = ST_FB_SPEC;
+        }
 		else {		// option not recognized
 			printf("Parameters section not recognized\n\n");
 			printf("[USAGE]: nmmi_param device_id section\n\n");
@@ -171,6 +174,7 @@ int main(int argc, char **argv) {
 			printf("Expansion port\t'exp' or 'expansion'\n");
 			printf("User\t\t'usr' or 'user'\n");
 			printf("SoftHand\t'SH' or 'softhand'\n");
+            printf("Feedback\t'FB' or 'feedback'\n");
 			return -1;
 		}
 	}
@@ -663,6 +667,9 @@ void retrieve_section_str(int sec_idx, char* res_str){
 		case ST_SH_SPEC:
 			strcpy(res_str, "SOFTHAND SPECIFIC PARAMETERS");
 			break;			
+        case ST_FB_SPEC:
+            strcpy(res_str, "FEEDBACK SPECIFIC PARAMETERS");
+            break;                      
 		default:
 			break;
 	}
