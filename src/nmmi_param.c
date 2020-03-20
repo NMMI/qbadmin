@@ -159,6 +159,9 @@ int main(int argc, char **argv) {
 		else if (!strcmp(submenu, "SH") || !strcmp(submenu, "softhand")){
 			show_section = ST_SH_SPEC;
 		}
+        else if (!strcmp(submenu, "MS") || !strcmp(submenu, "master")){
+            show_section = ST_MS_SPEC;
+        }
         else if (!strcmp(submenu, "FB") || !strcmp(submenu, "feedback")){
             show_section = ST_FB_SPEC;
         }
@@ -174,6 +177,7 @@ int main(int argc, char **argv) {
 			printf("Expansion port\t'exp' or 'expansion'\n");
 			printf("User\t\t'usr' or 'user'\n");
 			printf("SoftHand\t'SH' or 'softhand'\n");
+            printf("Master\t'MS' or 'master'\n");
             printf("Feedback\t'FB' or 'feedback'\n");
 			return -1;
 		}
@@ -667,6 +671,9 @@ void retrieve_section_str(int sec_idx, char* res_str){
 		case ST_SH_SPEC:
 			strcpy(res_str, "SOFTHAND SPECIFIC PARAMETERS");
 			break;			
+        case ST_MS_SPEC:
+            strcpy(res_str, "MASTER SPECIFIC PARAMETERS");
+            break; 
         case ST_FB_SPEC:
             strcpy(res_str, "FEEDBACK SPECIFIC PARAMETERS");
             break;                      

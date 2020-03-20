@@ -100,4 +100,5 @@
 #define ST_EXPANSION    50
 #define ST_USER         60
 #define ST_SH_SPEC      70
-#define ST_FB_SPEC		80   
+#define ST_MS_SPEC		80
+#define ST_FB_SPEC		90   
