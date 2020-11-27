@@ -165,6 +165,9 @@ int main(int argc, char **argv) {
         else if (!strcmp(submenu, "FB") || !strcmp(submenu, "feedback")){
             show_section = ST_FB_SPEC;
         }
+        else if (!strcmp(submenu, "WR") || !strcmp(submenu, "wrist")){
+            show_section = ST_WR_SPEC;
+        }
 		else {		// option not recognized
 			printf("Parameters section not recognized\n\n");
 			printf("[USAGE]: nmmi_param device_id section\n\n");
@@ -179,6 +182,7 @@ int main(int argc, char **argv) {
 			printf("SoftHand\t'SH' or 'softhand'\n");
             printf("Master\t'MS' or 'master'\n");
             printf("Feedback\t'FB' or 'feedback'\n");
+            printf("Wrist\t'WR' or 'wrist'\n");
 			return -1;
 		}
 	}
@@ -676,6 +680,9 @@ void retrieve_section_str(int sec_idx, char* res_str){
             break; 
         case ST_FB_SPEC:
             strcpy(res_str, "FEEDBACK SPECIFIC PARAMETERS");
+            break;    
+        case ST_WR_SPEC:
+            strcpy(res_str, "WRIST SPECIFIC PARAMETERS");
             break;                      
 		default:
 			break;
