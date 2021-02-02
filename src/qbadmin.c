@@ -77,6 +77,7 @@
 #include <math.h>
 #include <signal.h>
 #include <assert.h>
+#include <io.h>
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <windows.h>
@@ -118,10 +119,11 @@ static const struct option longOpts[] = {
 	{"get_adc_raw", no_argument, NULL, 'A'},
 	{"get_encoder_raw", no_argument, NULL, 'E'},
 	{"get_SD_files", no_argument, NULL, 'S'},
+    {"get_SD_filesystem", no_argument, NULL, 'X'},
     { NULL, no_argument, NULL, 0 }
 };
 
-static const char *optString = "s:adgprtvh?f:ljqxzkycbe:uoiW:PB:QAES";
+static const char *optString = "s:adgprtvh?f:ljqxzkycbe:uoiW:PB:QAESX";
 
 struct global_args {
     int device_id;
@@ -155,6 +157,7 @@ struct global_args {
 	int flag_get_adc_raw;			///< Additional -A option
 	int flag_get_encoder_raw;		///< Additional -E option
 	int flag_get_SD_files;			///< Additional -S option
+    int flag_get_SD_filesystem;     ///< Additional -X option
 
     short int inputs[NUM_OF_MOTORS];
     short int measurements[4];
@@ -293,6 +296,7 @@ int main (int argc, char **argv)
 	global_args.flag_get_adc_raw   		= 0;
 	global_args.flag_get_encoder_raw	= 0;
 	global_args.flag_get_SD_files		= 0;
+    global_args.flag_get_SD_filesystem  = 0;
 
     global_args.BaudRate                = baudrate_reader();
 
@@ -410,7 +414,10 @@ int main (int argc, char **argv)
 				break;	
 			case 'S':
 				global_args.flag_get_SD_files = 1;
-				break;					
+				break;
+            case 'X':
+                global_args.flag_get_SD_filesystem = 1;
+                break;					
             case 'h':
             case '?':
             default:
@@ -534,6 +541,120 @@ int main (int argc, char **argv)
 		return 0;
 	}
 
+    if (global_args.flag_get_SD_filesystem)
+    {
+        char str_folder_tree[10000] = "";
+        
+        if(global_args.flag_verbose)
+            puts("Getting SD filesystem.");
+
+        // Called with PING command
+        // Get all the folders with path and contained files number in the CSV-like format
+        // e.g. rows like [USER\YYYY\MM\DD, number_of_files]
+        fprintf(stdout, "Getting the SD card filesystem structure ...");
+        fflush(stdout);
+        commGetInfo(&comm_settings_1, global_args.device_id, GET_SD_FS_TREE, str_folder_tree);
+        //printf("%s\n", str_folder_tree);
+        fprintf(stdout, " OK\n");
+
+        if (mkdir(SD_FS_FOLDER) == 0){
+    
+            // Parse
+            char path[100] = "";
+            int n_files = 0;
+            int n_bytes = 0;
+            int n_bytes_local = 0;
+            char local_str[100] = "";
+            char user[10] = "";
+            char year[10] = "";
+            char month[10] = "";
+            char day[10] = "";
+        
+            strncpy(local_str, str_folder_tree, strlen(str_folder_tree));
+            do {
+                sscanf(local_str, "%100[^,],%d\r\n%n", path, &n_files, &n_bytes_local);
+                sscanf(path, "\\%10[^\\]\\%10[^\\]\\%10[^\\]\\%10[^\\]", user, year, month, day);
+                //printf("%s %d %d\n", path, n_files, n_bytes_local);    
+                //printf("%s %s %s %s %d %d\n", user, year, month, day, n_files, n_bytes_local);    
+
+                // Create each folder and move inside it
+                char f_mkdir_path[100] = "";
+                strcpy(f_mkdir_path, SD_FS_FOLDER);
+
+                strcat(f_mkdir_path, user);
+                mkdir(f_mkdir_path);            // create user folder
+                strcat(f_mkdir_path, "\\");
+                strcat(f_mkdir_path, year);
+                mkdir(f_mkdir_path);            // create year folder
+                strcat(f_mkdir_path, "\\");
+                strcat(f_mkdir_path, month);
+                mkdir(f_mkdir_path);            // create month folder
+                strcat(f_mkdir_path, "\\");
+                strcat(f_mkdir_path, day);
+                mkdir(f_mkdir_path);            // create year folder
+
+                // Download every file in the folder
+                for (int i = 0; i < n_files; i++){
+
+                    char str_data[20000] = "";
+                    char fw_path[100] = "";
+                    char filename_path[1000] = "";
+                    char filename[20] = "";
+                    strcpy(fw_path,  path);
+
+                    if (i %2 == 0){
+                        sprintf(filename, "\\Param_%d.csv", i/2);    
+                    }
+                    else {
+                        sprintf(filename, "\\UseStats_%d.csv", i/2);
+                    }
+                    strcat(fw_path, filename);
+                   
+                    fprintf(stdout, "Getting the file %s ", fw_path);
+                    fflush(stdout);
+
+                    strcpy(str_data, "");
+                    int ret;
+                    do{
+                        ret = commGetSDFile(&comm_settings_1, global_args.device_id, fw_path, str_data);
+                        usleep(500000);
+                        fprintf(stdout, ".");
+                        fflush(stdout);
+                    } while(!strcmp(str_data, ""));
+
+                    fprintf(stdout, " OK\n");
+
+                    if (!ret){
+
+                        //printf("File content: %s\n", str_data);
+        
+                        strcat(filename_path, f_mkdir_path);
+                        strcat(filename_path, filename);
+                        global_args.SD_data_file = fopen(filename_path, "w");
+                        fprintf(global_args.SD_data_file, "%s", str_data);
+                        fclose(global_args.SD_data_file);
+
+                    }
+                    else
+                        break;
+                }
+    
+                n_bytes += n_bytes_local;
+                strncpy(local_str, str_folder_tree + n_bytes, strlen(str_folder_tree) - n_bytes);            
+
+            } while(n_bytes_local > 0);
+                
+            printf("SD filesystem has been saved in %s folder\n", SD_FS_FOLDER);
+        }
+        else {
+            printf("Error in creating SD filesystem folder. Maybe you have to remove the old SD_card folder in qbadmin path first");   
+        }                   
+
+        if(global_args.flag_verbose)
+            puts("Closing the application.");
+        
+        return 0;
+    }
 
 //===============================================================     set inputs
 
@@ -1872,6 +1993,8 @@ void display_usage( void )
 	puts(" -Q, --get_imu_readings           Retrieve accelerometers, gyroscopes and magnetometers readings");
 	puts(" -m, --get_emg_raw				Retrieve emg raw values");
 	puts(" -E, --get_encoder_raw			Retrieve encoder raw values");
+    puts(" -S, --get_SD_files               Retrieve current used SD parameters and data file");
+    puts(" -X, --get_SD_filesystem          Retrieve all the SD card filesystem");
 	puts("");
     puts("--------------------------------------------------------------------------------");
     puts("Examples:");

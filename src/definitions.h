@@ -52,8 +52,8 @@
 
 #include <math.h>
 
-#define QBADMIN_VERSION "v. 7.0 Centro Piaggio"
-#define NMMI_PARAM_VERSION "v. 1.0 Centro Piaggio"
+#define QBADMIN_VERSION "v. 7.1 Centro Piaggio"
+#define NMMI_PARAM_VERSION "v. 1.1 Centro Piaggio"
 
 #define NUM_OF_MOTORS 2
 #define NUM_OF_EMGS 2
@@ -87,6 +87,7 @@
 #define EMG_SAVED_VALUES "./../emg_values.csv"			///< Default location where the emg sensors values are saved
 #define SD_PARAM_FILE	"./../SD_param.csv"
 #define SD_DATA_FILE	"./../SD_data.csv"
+#define SD_FS_FOLDER	"./../SD_card/"
 
 //==============================================================================
 //                                                              STRUCTURES INDEX
@@ -103,3 +104,4 @@
 #define ST_MS_SPEC		80
 #define ST_FB_SPEC		90   
 #define ST_WR_SPEC		100
+#define ST_JOY_SPEC		110

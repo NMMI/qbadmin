@@ -683,7 +683,10 @@ void retrieve_section_str(int sec_idx, char* res_str){
             break;    
         case ST_WR_SPEC:
             strcpy(res_str, "WRIST SPECIFIC PARAMETERS");
-            break;                      
+            break;    
+        case ST_JOY_SPEC:
+            strcpy(res_str, "JOYSTICK SPECIFIC PARAMETERS");
+            break;    
 		default:
 			break;
 	}
