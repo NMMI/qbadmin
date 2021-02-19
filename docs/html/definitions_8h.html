@@ -90,10 +90,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a82178bde559e31158313c53e55709f7b"><td class="memItemLeft" align="right" valign="top"><a id="a82178bde559e31158313c53e55709f7b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>QBADMIN_VERSION</b>&#160;&#160;&#160;&quot;v 7.0 Centro Piaggio&quot;</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>QBADMIN_VERSION</b>&#160;&#160;&#160;&quot;v. 7.1 Centro Piaggio&quot;</td></tr>
 <tr class="separator:a82178bde559e31158313c53e55709f7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2df364f88287df7e654ee05b9422af45"><td class="memItemLeft" align="right" valign="top"><a id="a2df364f88287df7e654ee05b9422af45"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NMMI_PARAM_VERSION</b>&#160;&#160;&#160;&quot;v 1.0 Centro Piaggio&quot;</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NMMI_PARAM_VERSION</b>&#160;&#160;&#160;&quot;v. 1.1 Centro Piaggio&quot;</td></tr>
 <tr class="separator:a2df364f88287df7e654ee05b9422af45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39ac50737c1ee7d5b723b2597fdf6f26"><td class="memItemLeft" align="right" valign="top"><a id="a39ac50737c1ee7d5b723b2597fdf6f26"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NUM_OF_MOTORS</b>&#160;&#160;&#160;2</td></tr>
@@ -177,6 +177,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a95bdc203708a970d7dd52ecf7b2f3814"><td class="memItemLeft" align="right" valign="top"><a id="a95bdc203708a970d7dd52ecf7b2f3814"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SD_DATA_FILE</b>&#160;&#160;&#160;&quot;./../SD_data.csv&quot;</td></tr>
 <tr class="separator:a95bdc203708a970d7dd52ecf7b2f3814"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a147e78b367bb63c90e08cdaf5eb0b3bf"><td class="memItemLeft" align="right" valign="top"><a id="a147e78b367bb63c90e08cdaf5eb0b3bf"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SD_FS_FOLDER</b>&#160;&#160;&#160;&quot;./../SD_card/&quot;</td></tr>
+<tr class="separator:a147e78b367bb63c90e08cdaf5eb0b3bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f8f4a24628c7191c9adde97ae751bf2"><td class="memItemLeft" align="right" valign="top"><a id="a5f8f4a24628c7191c9adde97ae751bf2"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_DEVICE</b>&#160;&#160;&#160;0</td></tr>
 <tr class="separator:a5f8f4a24628c7191c9adde97ae751bf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -201,13 +204,22 @@ Macros</h2></td></tr>
 <tr class="memitem:a788bae111bb48b9aa005ecf765ce1e94"><td class="memItemLeft" align="right" valign="top"><a id="a788bae111bb48b9aa005ecf765ce1e94"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_SH_SPEC</b>&#160;&#160;&#160;70</td></tr>
 <tr class="separator:a788bae111bb48b9aa005ecf765ce1e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09fa5a059f637c6e635e27cbb1b437f8"><td class="memItemLeft" align="right" valign="top"><a id="a09fa5a059f637c6e635e27cbb1b437f8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_MS_SPEC</b>&#160;&#160;&#160;80</td></tr>
+<tr class="separator:a09fa5a059f637c6e635e27cbb1b437f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad8e3965151790073226b9ec124c0808"><td class="memItemLeft" align="right" valign="top"><a id="aad8e3965151790073226b9ec124c0808"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_FB_SPEC</b>&#160;&#160;&#160;90</td></tr>
+<tr class="separator:aad8e3965151790073226b9ec124c0808"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d9602ba2be82a71e64ec82dc5ce72ba"><td class="memItemLeft" align="right" valign="top"><a id="a8d9602ba2be82a71e64ec82dc5ce72ba"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST_WR_SPEC</b>&#160;&#160;&#160;100</td></tr>
+<tr class="separator:a8d9602ba2be82a71e64ec82dc5ce72ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Definitions for board commands, parameters and packages. </p>
 <dl class="section author"><dt>Author</dt><dd><em>Centro "E.Piaggio"</em> </dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>(C) 2012-2016 qbrobotics. All rights reserved. </dd>
 <dd>
-(C) 2017-2019 Centro "E.Piaggio". All rights reserved.</dd></dl>
+(C) 2017-2020 Centro "E.Piaggio". All rights reserved.</dd></dl>
 <p>This file is included in the board firmware, in its libraries and applications. It contains all definitions that are necessary for the contruction of communication packages.</p>
 <p>It includes definitions for all of the device commands, parameters and also the size of answer packages. </p>
 </div></div><!-- contents -->

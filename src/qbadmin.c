@@ -38,7 +38,7 @@
 * \brief        Command line tools file
 * \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
-* \copyright    (C) 2017-2020 Centro "E.Piaggio". All rights reserved.
+* \copyright    (C) 2017-2021 Centro "E.Piaggio". All rights reserved.
 *
 * \details      With this file is possible to command a terminal device.
 */
@@ -50,9 +50,9 @@
 *
 * \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
-* \copyright    (C) 2017-2020 Centro "E.Piaggio". All rights reserved.
+* \copyright    (C) 2017-2021 Centro "E.Piaggio". All rights reserved.
 *
-* \date         March 19th, 2020
+* \date         February 19th, 2021
 *
 * \details      This is a set of functions that allows to use the boards 
 *               via a serial port.
@@ -77,11 +77,13 @@
 #include <math.h>
 #include <signal.h>
 #include <assert.h>
-#include <io.h>
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <windows.h>
+    #include <io.h>
 	#define sleep(x) Sleep(1000 * x)
+#else
+    #include <sys/stat.h>
 #endif
 
 //===============================================================     structures
@@ -557,7 +559,14 @@ int main (int argc, char **argv)
         //printf("%s\n", str_folder_tree);
         fprintf(stdout, " OK\n");
 
-        if (mkdir(SD_FS_FOLDER) == 0){
+        int mkdirRet = 0;
+#if !(defined(_WIN32) || defined(_WIN64))
+        mkdirRet = mkdir(SD_FS_FOLDER, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+#else
+        mkdirRet = mkdir(SD_FS_FOLDER);
+#endif         
+       
+        if (mkdirRet == 0){
     
             // Parse
             char path[100] = "";
@@ -569,7 +578,15 @@ int main (int argc, char **argv)
             char year[10] = "";
             char month[10] = "";
             char day[10] = "";
-        
+ 
+
+            char sepChar[2] = "";
+#if !(defined(_WIN32) || defined(_WIN64))
+            strcpy(sepChar, "/");
+#else
+            strcpy(sepChar, "\\");
+#endif       
+
             strncpy(local_str, str_folder_tree, strlen(str_folder_tree));
             do {
                 sscanf(local_str, "%100[^,],%d\r\n%n", path, &n_files, &n_bytes_local);
@@ -581,17 +598,31 @@ int main (int argc, char **argv)
                 char f_mkdir_path[100] = "";
                 strcpy(f_mkdir_path, SD_FS_FOLDER);
 
+#if !(defined(_WIN32) || defined(_WIN64))
+                strcat(f_mkdir_path, user);
+                mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create user folder
+                strcat(f_mkdir_path, sepChar);
+                strcat(f_mkdir_path, year);
+                mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create year folder
+                strcat(f_mkdir_path, sepChar);
+                strcat(f_mkdir_path, month);
+                mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create month folder
+                strcat(f_mkdir_path, sepChar);
+                strcat(f_mkdir_path, day);
+                mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create day folder
+#else
                 strcat(f_mkdir_path, user);
                 mkdir(f_mkdir_path);            // create user folder
-                strcat(f_mkdir_path, "\\");
+                strcat(f_mkdir_path, sepChar);
                 strcat(f_mkdir_path, year);
                 mkdir(f_mkdir_path);            // create year folder
-                strcat(f_mkdir_path, "\\");
+                strcat(f_mkdir_path, sepChar);
                 strcat(f_mkdir_path, month);
                 mkdir(f_mkdir_path);            // create month folder
-                strcat(f_mkdir_path, "\\");
+                strcat(f_mkdir_path, sepChar);
                 strcat(f_mkdir_path, day);
-                mkdir(f_mkdir_path);            // create year folder
+                mkdir(f_mkdir_path);            // create day folder
+#endif
 
                 // Download every file in the folder
                 for (int i = 0; i < n_files; i++){
@@ -601,12 +632,13 @@ int main (int argc, char **argv)
                     char filename_path[1000] = "";
                     char filename[20] = "";
                     strcpy(fw_path,  path);
+                    strcat(fw_path, "\\");  // Add this separator for SD filesystem
 
                     if (i %2 == 0){
-                        sprintf(filename, "\\Param_%d.csv", i/2);    
+                        sprintf(filename, "Param_%d.csv", i/2);    
                     }
                     else {
-                        sprintf(filename, "\\UseStats_%d.csv", i/2);
+                        sprintf(filename, "UseStats_%d.csv", i/2);
                     }
                     strcat(fw_path, filename);
                    
@@ -629,6 +661,7 @@ int main (int argc, char **argv)
                         //printf("File content: %s\n", str_data);
         
                         strcat(filename_path, f_mkdir_path);
+                        strcat(filename_path, sepChar);
                         strcat(filename_path, filename);
                         global_args.SD_data_file = fopen(filename_path, "w");
                         fprintf(global_args.SD_data_file, "%s", str_data);

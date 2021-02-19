@@ -168,6 +168,9 @@ int main(int argc, char **argv) {
         else if (!strcmp(submenu, "WR") || !strcmp(submenu, "wrist")){
             show_section = ST_WR_SPEC;
         }
+        else if (!strcmp(submenu, "JOY") || !strcmp(submenu, "joystick")){
+            show_section = ST_JOY_SPEC;
+        }
 		else {		// option not recognized
 			printf("Parameters section not recognized\n\n");
 			printf("[USAGE]: nmmi_param device_id section\n\n");
@@ -180,9 +183,10 @@ int main(int argc, char **argv) {
 			printf("Expansion port\t'exp' or 'expansion'\n");
 			printf("User\t\t'usr' or 'user'\n");
 			printf("SoftHand\t'SH' or 'softhand'\n");
-            printf("Master\t'MS' or 'master'\n");
+            printf("Master\t\t'MS' or 'master'\n");
             printf("Feedback\t'FB' or 'feedback'\n");
             printf("Wrist\t'WR' or 'wrist'\n");
+            printf("Joystick\t'JOY' or 'joystick'\n");
 			return -1;
 		}
 	}

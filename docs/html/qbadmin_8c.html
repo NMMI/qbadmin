@@ -85,6 +85,7 @@ $(function() {
 <code>#include &lt;math.h&gt;</code><br />
 <code>#include &lt;signal.h&gt;</code><br />
 <code>#include &lt;assert.h&gt;</code><br />
+<code>#include &lt;sys/stat.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for qbadmin.c:</div>
 <div class="dyncontent">
@@ -134,7 +135,7 @@ Variables</h2></td></tr>
 static const struct option&#160;</td><td class="memItemRight" valign="bottom"><b>longOpts</b> []</td></tr>
 <tr class="separator:a091f2d9683d6ef802780b360f66bad67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b7271ddd60c22960c39ae6caf4d5254"><td class="memItemLeft" align="right" valign="top"><a id="a1b7271ddd60c22960c39ae6caf4d5254"></a>
-static const char *&#160;</td><td class="memItemRight" valign="bottom"><b>optString</b> = &quot;s:adgprtvh?f:ljqxzkycbe:uoiW:PB:QAES&quot;</td></tr>
+static const char *&#160;</td><td class="memItemRight" valign="bottom"><b>optString</b> = &quot;s:adgprtvh?f:ljqxzkycbe:uoiW:PB:QAESX&quot;</td></tr>
 <tr class="separator:a1b7271ddd60c22960c39ae6caf4d5254"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8e0866643ba994eff3e2fa3203885e0"><td class="memItemLeft" align="right" valign="top"><a id="ac8e0866643ba994eff3e2fa3203885e0"></a>
 struct <a class="el" href="structglobal__args.html">global_args</a>&#160;</td><td class="memItemRight" valign="bottom"><b>global_args</b></td></tr>
@@ -163,7 +164,7 @@ comm_settings&#160;</td><td class="memItemRight" valign="bottom"><b>comm_setting
 <dl class="section author"><dt>Author</dt><dd><em>Centro "E.Piaggio"</em> </dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>(C) 2012-2016 qbrobotics. All rights reserved. </dd>
 <dd>
-(C) 2017-2019 Centro "E.Piaggio". All rights reserved.</dd></dl>
+(C) 2017-2021 Centro "E.Piaggio". All rights reserved.</dd></dl>
 <p>With this file is possible to command a terminal device. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a872d84bb02f7d8f4617246f0c6d37c43"></a>

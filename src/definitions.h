@@ -53,7 +53,7 @@
 #include <math.h>
 
 #define QBADMIN_VERSION "v. 7.1 Centro Piaggio"
-#define NMMI_PARAM_VERSION "v. 1.1 Centro Piaggio"
+#define NMMI_PARAM_VERSION "v. 1.2 Centro Piaggio"
 
 #define NUM_OF_MOTORS 2
 #define NUM_OF_EMGS 2
