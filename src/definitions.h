@@ -87,6 +87,7 @@
 #define EMG_SAVED_VALUES "./../emg_values.csv"			///< Default location where the emg sensors values are saved
 #define SD_PARAM_FILE	"./../SD_param.csv"
 #define SD_DATA_FILE	"./../SD_data.csv"
+#define SD_EMG_HIST_FILE "./../SD_EMG_history.csv"
 #define SD_FS_FOLDER	"./../SD_card/"
 
 //==============================================================================

@@ -186,6 +186,7 @@ struct global_args {
 	short int* adc_raw;
 	FILE* SD_param_file;
 	FILE* SD_data_file;
+    FILE* SD_EMG_history_file;
 	
     FILE* emg_file;
     FILE* log_file_fd;
@@ -536,6 +537,20 @@ int main (int argc, char **argv)
 		fclose(global_args.SD_data_file);
 		
 		printf("SD current data have been saved in %s file\n", SD_DATA_FILE);
+
+        char str_EMG_data[200000] = "";         // Approx. 200 kb should be good for 30 mins recording
+        
+        puts("\nGetting SD EMG History data files....(please wait, it is a large file)");
+        
+        commGetInfo(&comm_settings_1, global_args.device_id, GET_SD_EMG_HIST, str_EMG_data);
+        
+        //puts(str_data);
+        
+        global_args.SD_EMG_history_file = fopen(SD_EMG_HIST_FILE, "w");
+        fprintf(global_args.SD_EMG_history_file, "%s", str_EMG_data);
+        fclose(global_args.SD_EMG_history_file);
+        
+        printf("SD current EMG history data have been saved in %s file\n", SD_EMG_HIST_FILE);
 		
 		if(global_args.flag_verbose)
             puts("Closing the application.");
