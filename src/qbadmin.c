@@ -187,6 +187,7 @@ struct global_args {
 	FILE* SD_param_file;
 	FILE* SD_data_file;
     FILE* SD_EMG_history_file;
+    FILE* SD_R01_file;
 	
     FILE* emg_file;
     FILE* log_file_fd;
@@ -522,6 +523,7 @@ int main (int argc, char **argv)
 		fclose(global_args.SD_param_file);
 		
 		printf("SD current parameters have been saved in %s file\n", SD_PARAM_FILE);
+
 		
 		char str_data[10000] = "";
 		
@@ -537,6 +539,22 @@ int main (int argc, char **argv)
 		fclose(global_args.SD_data_file);
 		
 		printf("SD current data have been saved in %s file\n", SD_DATA_FILE);
+
+        char str_R01_data[10000] = "";
+        
+        if(global_args.flag_verbose)
+            puts("\nGetting R01 project data files.");
+        
+        commGetInfo(&comm_settings_1, global_args.device_id, GET_SD_R01_SUMM, str_R01_data);
+        
+        //puts(str_data);
+        
+        global_args.SD_R01_file = fopen(SD_R01_SUMM_FILE, "w");
+        fprintf(global_args.SD_R01_file, "%s", str_R01_data);
+        fclose(global_args.SD_R01_file);
+        
+        printf("SD current R01 project data have been saved in %s file\n", SD_R01_SUMM_FILE);
+
 
         char str_EMG_data[200000] = "";         // Approx. 200 kb should be good for 30 mins recording
         
@@ -571,8 +589,9 @@ int main (int argc, char **argv)
         fprintf(stdout, "Getting the SD card filesystem structure ...");
         fflush(stdout);
         commGetInfo(&comm_settings_1, global_args.device_id, GET_SD_FS_TREE, str_folder_tree);
-        //printf("%s\n", str_folder_tree);
+        printf("\n\nFolder tree: \n%s\n", str_folder_tree);
         fprintf(stdout, " OK\n");
+
 
         int mkdirRet = 0;
 #if !(defined(_WIN32) || defined(_WIN64))
@@ -609,88 +628,97 @@ int main (int argc, char **argv)
                 //printf("%s %d %d\n", path, n_files, n_bytes_local);    
                 //printf("%s %s %s %s %d %d\n", user, year, month, day, n_files, n_bytes_local);    
 
-                // Create each folder and move inside it
-                char f_mkdir_path[100] = "";
-                strcpy(f_mkdir_path, SD_FS_FOLDER);
+                printf("\nDo you want to save the files of user %s (y/n)? ", user);
+                char saveUser;
+                scanf("%c", &saveUser);
+            
+                if (saveUser == 'y' or saveUser == 'Y'){
+
+                    // Create each folder and move inside it
+                    char f_mkdir_path[100] = "";
+                    strcpy(f_mkdir_path, SD_FS_FOLDER);
 
 #if !(defined(_WIN32) || defined(_WIN64))
-                strcat(f_mkdir_path, user);
-                mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create user folder
-                strcat(f_mkdir_path, sepChar);
-                strcat(f_mkdir_path, year);
-                mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create year folder
-                strcat(f_mkdir_path, sepChar);
-                strcat(f_mkdir_path, month);
-                mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create month folder
-                strcat(f_mkdir_path, sepChar);
-                strcat(f_mkdir_path, day);
-                mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create day folder
+                    strcat(f_mkdir_path, user);
+                    mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create user folder
+                    strcat(f_mkdir_path, sepChar);
+                    strcat(f_mkdir_path, year);
+                    mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create year folder
+                    strcat(f_mkdir_path, sepChar);
+                    strcat(f_mkdir_path, month);
+                    mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create month folder
+                    strcat(f_mkdir_path, sepChar);
+                    strcat(f_mkdir_path, day);
+                    mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create day folder
 #else
-                strcat(f_mkdir_path, user);
-                mkdir(f_mkdir_path);            // create user folder
-                strcat(f_mkdir_path, sepChar);
-                strcat(f_mkdir_path, year);
-                mkdir(f_mkdir_path);            // create year folder
-                strcat(f_mkdir_path, sepChar);
-                strcat(f_mkdir_path, month);
-                mkdir(f_mkdir_path);            // create month folder
-                strcat(f_mkdir_path, sepChar);
-                strcat(f_mkdir_path, day);
-                mkdir(f_mkdir_path);            // create day folder
+                    strcat(f_mkdir_path, user);
+                    mkdir(f_mkdir_path);            // create user folder
+                    strcat(f_mkdir_path, sepChar);
+                    strcat(f_mkdir_path, year);
+                    mkdir(f_mkdir_path);            // create year folder
+                    strcat(f_mkdir_path, sepChar);
+                    strcat(f_mkdir_path, month);
+                    mkdir(f_mkdir_path);            // create month folder
+                    strcat(f_mkdir_path, sepChar);
+                    strcat(f_mkdir_path, day);
+                    mkdir(f_mkdir_path);            // create day folder
 #endif
 
-                // Download every file in the folder
-                for (int i = 0; i < n_files; i++){
+                    // Download every file in the folder
+                    for (int i = 0; i < n_files; i++){
 
-                    char str_data[20000] = "";
-                    char fw_path[100] = "";
-                    char filename_path[1000] = "";
-                    char filename[20] = "";
-                    strcpy(fw_path,  path);
-                    strcat(fw_path, "\\");  // Add this separator for SD filesystem
+                        char str_data[20000] = "";
+                        char fw_path[100] = "";
+                        char filename_path[1000] = "";
+                        char filename[20] = "";
+                        strcpy(fw_path,  path);
+                        strcat(fw_path, "\\");  // Add this separator for SD filesystem
 
-                    if (i %2 == 0){
-                        sprintf(filename, "Param_%d.csv", i/2);    
-                    }
-                    else {
-                        sprintf(filename, "UseStats_%d.csv", i/2);
-                    }
-                    strcat(fw_path, filename);
-                   
-                    fprintf(stdout, "Getting the file %s ", fw_path);
-                    fflush(stdout);
-
-                    strcpy(str_data, "");
-                    int ret;
-                    do{
-                        ret = commGetSDFile(&comm_settings_1, global_args.device_id, fw_path, str_data);
-                        usleep(500000);
-                        fprintf(stdout, ".");
+                        if (i %2 == 0){
+                            sprintf(filename, "Param_%d.csv", i/2);    
+                        }
+                        else {
+                            sprintf(filename, "UseStats_%d.csv", i/2);
+                        }
+                        strcat(fw_path, filename);
+                       
+                        fprintf(stdout, "Getting the file %s ", fw_path);
                         fflush(stdout);
-                    } while(!strcmp(str_data, ""));
 
-                    fprintf(stdout, " OK\n");
+                        strcpy(str_data, "");
+                        int ret;
+                        do{
+                            ret = commGetSDFile(&comm_settings_1, global_args.device_id, fw_path, str_data);
+                            usleep(500000);
+                            fprintf(stdout, ".");
+                            fflush(stdout);
+                        } while(!strcmp(str_data, ""));
 
-                    if (!ret){
+                        fprintf(stdout, " OK\n");
 
-                        //printf("File content: %s\n", str_data);
-        
-                        strcat(filename_path, f_mkdir_path);
-                        strcat(filename_path, sepChar);
-                        strcat(filename_path, filename);
-                        global_args.SD_data_file = fopen(filename_path, "w");
-                        fprintf(global_args.SD_data_file, "%s", str_data);
-                        fclose(global_args.SD_data_file);
+                        if (!ret){
 
+                            //printf("File content: %s\n", str_data);
+            
+                            strcat(filename_path, f_mkdir_path);
+                            strcat(filename_path, sepChar);
+                            strcat(filename_path, filename);
+                            global_args.SD_data_file = fopen(filename_path, "w");
+                            fprintf(global_args.SD_data_file, "%s", str_data);
+                            fclose(global_args.SD_data_file);
+
+                        }
+                        else
+                            break;
                     }
-                    else
-                        break;
+
+                    printf("Done\n");
                 }
     
                 n_bytes += n_bytes_local;
                 strncpy(local_str, str_folder_tree + n_bytes, strlen(str_folder_tree) - n_bytes);            
 
-            } while(n_bytes_local > 0);
+            } while(strlen(str_folder_tree) - n_bytes > 0);
                 
             printf("SD filesystem has been saved in %s folder\n", SD_FS_FOLDER);
         }

@@ -89,6 +89,7 @@
 #define SD_DATA_FILE	"./../SD_data.csv"
 #define SD_EMG_HIST_FILE "./../SD_EMG_history.csv"
 #define SD_FS_FOLDER	"./../SD_card/"
+#define SD_R01_SUMM_FILE "./../R01_Summary.csv"
 
 //==============================================================================
 //                                                              STRUCTURES INDEX
