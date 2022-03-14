@@ -613,7 +613,7 @@ int main (int argc, char **argv)
             char month[10] = "";
             char day[10] = "";
             char lastUser[10] = "";
- 
+            char saveUser = 0;
 
             char sepChar[2] = "";
 #if !(defined(_WIN32) || defined(_WIN64))
@@ -632,95 +632,96 @@ int main (int argc, char **argv)
                 if (strcmp(user, lastUser)){
 
                     printf("\nDo you want to save the files of user %s (y/n)? ", user);
-                    char saveUser = 0;
+                    saveUser = 0;
                     fflush(stdin);
                     scanf("%c", &saveUser);
                 
-                    if (saveUser == 'y' or saveUser == 'Y'){
+                }
 
-                        // Create each folder and move inside it
-                        char f_mkdir_path[100] = "";
-                        strcpy(f_mkdir_path, SD_FS_FOLDER);
+                if (saveUser == 'y' or saveUser == 'Y'){
+
+                    // Create each folder and move inside it
+                    char f_mkdir_path[100] = "";
+                    strcpy(f_mkdir_path, SD_FS_FOLDER);
 
     #if !(defined(_WIN32) || defined(_WIN64))
-                        strcat(f_mkdir_path, user);
-                        mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create user folder
-                        strcat(f_mkdir_path, sepChar);
-                        strcat(f_mkdir_path, year);
-                        mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create year folder
-                        strcat(f_mkdir_path, sepChar);
-                        strcat(f_mkdir_path, month);
-                        mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create month folder
-                        strcat(f_mkdir_path, sepChar);
-                        strcat(f_mkdir_path, day);
-                        mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create day folder
+                    strcat(f_mkdir_path, user);
+                    mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create user folder
+                    strcat(f_mkdir_path, sepChar);
+                    strcat(f_mkdir_path, year);
+                    mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create year folder
+                    strcat(f_mkdir_path, sepChar);
+                    strcat(f_mkdir_path, month);
+                    mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create month folder
+                    strcat(f_mkdir_path, sepChar);
+                    strcat(f_mkdir_path, day);
+                    mkdir(f_mkdir_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);            // create day folder
     #else
-                        strcat(f_mkdir_path, user);
-                        mkdir(f_mkdir_path);            // create user folder
-                        strcat(f_mkdir_path, sepChar);
-                        strcat(f_mkdir_path, year);
-                        mkdir(f_mkdir_path);            // create year folder
-                        strcat(f_mkdir_path, sepChar);
-                        strcat(f_mkdir_path, month);
-                        mkdir(f_mkdir_path);            // create month folder
-                        strcat(f_mkdir_path, sepChar);
-                        strcat(f_mkdir_path, day);
-                        mkdir(f_mkdir_path);            // create day folder
+                    strcat(f_mkdir_path, user);
+                    mkdir(f_mkdir_path);            // create user folder
+                    strcat(f_mkdir_path, sepChar);
+                    strcat(f_mkdir_path, year);
+                    mkdir(f_mkdir_path);            // create year folder
+                    strcat(f_mkdir_path, sepChar);
+                    strcat(f_mkdir_path, month);
+                    mkdir(f_mkdir_path);            // create month folder
+                    strcat(f_mkdir_path, sepChar);
+                    strcat(f_mkdir_path, day);
+                    mkdir(f_mkdir_path);            // create day folder
     #endif
 
-                        // Download every file in the folder
-                        for (int i = 0; i < n_files; i++){
+                    // Download every file in the folder
+                    for (int i = 0; i < n_files; i++){
 
-                            char str_data[20000] = "";
-                            char fw_path[100] = "";
-                            char filename_path[1000] = "";
-                            char filename[20] = "";
-                            strcpy(fw_path,  path);
-                            strcat(fw_path, "\\");  // Add this separator for SD filesystem
+                        char str_data[20000] = "";
+                        char fw_path[100] = "";
+                        char filename_path[1000] = "";
+                        char filename[20] = "";
+                        strcpy(fw_path,  path);
+                        strcat(fw_path, "\\");  // Add this separator for SD filesystem
 
-                            if (i %2 == 0){
-                                sprintf(filename, "Param_%d.csv", i/2);    
-                            }
-                            else {
-                                sprintf(filename, "UseStats_%d.csv", i/2);
-                            }
-                            strcat(fw_path, filename);
-                           
-                            fprintf(stdout, "Getting the file %s ", fw_path);
-                            fflush(stdout);
-
-                            strcpy(str_data, "");
-                            int ret;
-                            do{
-                                ret = commGetSDFile(&comm_settings_1, global_args.device_id, fw_path, str_data);
-                                usleep(500000);
-                                fprintf(stdout, ".");
-                                fflush(stdout);
-                            } while(!strcmp(str_data, ""));
-
-                            fprintf(stdout, " OK\n");
-
-                            if (!ret){
-
-                                //printf("File content: %s\n", str_data);
-                
-                                strcat(filename_path, f_mkdir_path);
-                                strcat(filename_path, sepChar);
-                                strcat(filename_path, filename);
-                                global_args.SD_data_file = fopen(filename_path, "w");
-                                fprintf(global_args.SD_data_file, "%s", str_data);
-                                fclose(global_args.SD_data_file);
-
-                            }
-                            else
-                                break;
+                        if (i %2 == 0){
+                            sprintf(filename, "Param_%d.csv", i/2);    
                         }
+                        else {
+                            sprintf(filename, "UseStats_%d.csv", i/2);
+                        }
+                        strcat(fw_path, filename);
+                       
+                        fprintf(stdout, "Getting the file %s ", fw_path);
+                        fflush(stdout);
 
-                        printf("Done\n");
+                        strcpy(str_data, "");
+                        int ret;
+                        do{
+                            ret = commGetSDFile(&comm_settings_1, global_args.device_id, fw_path, str_data);
+                            usleep(500000);
+                            fprintf(stdout, ".");
+                            fflush(stdout);
+                        } while(!strcmp(str_data, ""));
+
+                        fprintf(stdout, " OK\n");
+
+                        if (!ret){
+
+                            //printf("File content: %s\n", str_data);
+            
+                            strcat(filename_path, f_mkdir_path);
+                            strcat(filename_path, sepChar);
+                            strcat(filename_path, filename);
+                            global_args.SD_data_file = fopen(filename_path, "w");
+                            fprintf(global_args.SD_data_file, "%s", str_data);
+                            fclose(global_args.SD_data_file);
+
+                        }
+                        else
+                            break;
                     }
 
-                    strcpy(lastUser, user);
-                }   
+                    printf("Done\n");
+                }
+
+                strcpy(lastUser, user);              
     
                 n_bytes += n_bytes_local;
                 strncpy(local_str, str_folder_tree + n_bytes, strlen(str_folder_tree) - n_bytes);            
