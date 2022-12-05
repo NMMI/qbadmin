@@ -100,9 +100,9 @@ or this:
 
 ## Using the tools
 
-Usign a terminal, go to the binary folder and execute what you need e.g.:
+Using a terminal, go to the binary folder and execute what you need e.g.:
 
-windows
+Windows
 `name_of_the_bin.exe`
 
 UNIX
@@ -110,3 +110,17 @@ UNIX
 
 > By executing the tools you will receive the usage instruction
 
+## Use with a Bluetooth device
+
+### Windows
+After pairing your Bluetooth device to the computer, go to the Bluetooth option devices settings to find the right COM port, following the procedure
+> Click 'Start', then 'Settings' (You can also access Settings with the Windows Key + I shortcut), click 'Bluetooth & devices', click 'Devices', then scroll down, and click 'More Bluetooth settings'. Under the 'COM Ports' tab find the OUTPUT/OUTGOING port related to your BT device and use this one with qbadmin.exe
+
+### Linux
+After pairing your Bluetooth device to the computer, open a terminal and type rfcomm command to bind it to a device filename:
+`sudo rfcomm bind /dev/rfcommX MAC_ADDRESS channel` (e.g. `sudo rfcomm bind /dev/rfcomm0 20:71:9B:19:3E:41 1`)
+> Now the device is recognized under the name `/dev/rfcomm0`
+
+### MacOS
+After pairing your Bluetooth device to the computer, it will be recognized by the system with a name similar to
+`/dev/tty.NMMIDev001-BTCOMPORT`
