@@ -54,7 +54,7 @@
 #include <getopt.h>
 #include <stdint.h>
 
-#define NUM_OF_MAX_PARAMS   100
+#define NUM_OF_MAX_PARAMS   150
 
 // function declaration
 int port_selection();
