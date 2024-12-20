@@ -2,7 +2,7 @@
 // BSD 3-Clause License
 
 // Copyright (c) 2016, qbrobotics
-// Copyright (c) 2017-2020, Centro "E.Piaggio"
+// Copyright (c) 2017-2024, Centro "E.Piaggio"
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@
 * \brief        Command line tools file
 * \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
-* \copyright    (C) 2017-2021 Centro "E.Piaggio". All rights reserved.
+* \copyright    (C) 2017-2024 Centro "E.Piaggio". All rights reserved.
 *
 * \details      With this file is possible to command a terminal device.
 */
@@ -50,9 +50,9 @@
 *
 * \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
-* \copyright    (C) 2017-2021 Centro "E.Piaggio". All rights reserved.
+* \copyright    (C) 2017-2024 Centro "E.Piaggio". All rights reserved.
 *
-* \date         February 19th, 2021
+* \date         December 20th, 2024
 *
 * \details      This is a set of functions that allows to use the boards 
 *               via a serial port.
@@ -117,6 +117,7 @@ static const struct option longOpts[] = {
     { "baudrate", required_argument, NULL, 'B'},
     { "set_watchdog", required_argument, NULL, 'W'},
     { "polling", no_argument, NULL, 'P'},
+    {"calib_IMU_mag", no_argument, NULL, 'M'},
 	{"get_imu_readings", no_argument, NULL, 'Q'},
 	{"get_adc_raw", no_argument, NULL, 'A'},
 	{"get_encoder_raw", no_argument, NULL, 'E'},
@@ -125,7 +126,7 @@ static const struct option longOpts[] = {
     { NULL, no_argument, NULL, 0 }
 };
 
-static const char *optString = "s:adgprtvh?f:ljqxzkycbe:uoiW:PB:QAESX";
+static const char *optString = "s:adgprtvh?f:ljqxzkycbe:uoiW:PB:MQAESX";
 
 struct global_args {
     int device_id;
@@ -155,6 +156,7 @@ struct global_args {
     int flag_baudrate;              ///< ./qbadmin -B option 
     int flag_get_joystick;          ///< ./qbadmin -j option
     int flag_ext_drive;             ///< ./qbadmin -x option
+    int flag_calib_IMU_mag;         ///< Additional -M option
 	int flag_get_imu_readings;		///< Additional -Q option
 	int flag_get_adc_raw;			///< Additional -A option
 	int flag_get_encoder_raw;		///< Additional -E option
@@ -296,6 +298,7 @@ int main (int argc, char **argv)
     global_args.flag_get_joystick       = 0;
     global_args.flag_ext_drive          = 0;
     global_args.flag_get_emg            = 0;
+    global_args.flag_calib_IMU_mag      = 0;
 	global_args.flag_get_imu_readings   = 0;
 	global_args.flag_get_adc_raw   		= 0;
 	global_args.flag_get_encoder_raw	= 0;
@@ -406,6 +409,9 @@ int main (int argc, char **argv)
                 sscanf(optarg,"%d", &aux[0]);
                 global_args.flag_baudrate = 1;
                 global_args.save_baurate = (int) aux[0];
+                break;
+            case 'M':
+                global_args.flag_calib_IMU_mag = 1;
                 break;
 			case 'Q':
 				global_args.flag_get_imu_readings = 1;
@@ -1382,7 +1388,16 @@ int main (int argc, char **argv)
 
     }
 
-	
+	//==========================================================     IMU magnetometer calib
+
+    if(global_args.flag_calib_IMU_mag)
+    {
+        printf("Calibration of IMU magnetometer started\n");
+        printf("Now rotate the device in all the directions until the LED on the board stops blinking (avg. 30 sec)\n");
+        printf("The firmware will compute values needed to compensate for hard and soft iron distortion.\nThese corrections will be then directly applied to data reading.\n");
+        commCalibIMUMagnetometer(&comm_settings_1, global_args.device_id);
+    }
+
 	//=========================================================  get imu readings
 
     if(global_args.flag_get_imu_readings)
@@ -2074,6 +2089,7 @@ void display_usage( void )
     puts("================================================================================");
     puts("Additional commands");
     puts("================================================================================");
+    puts(" -M, --calib_IMU_mag              Start calibration procedure of IMU magnetometers");
 	puts(" -Q, --get_imu_readings           Retrieve accelerometers, gyroscopes and magnetometers readings");
 	puts(" -m, --get_emg_raw				Retrieve emg raw values");
 	puts(" -E, --get_encoder_raw			Retrieve encoder raw values");
